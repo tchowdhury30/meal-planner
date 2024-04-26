@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, push, onValue } from "firebase/database";
+import { getDatabase, ref, push, onValue, set, remove } from "firebase/database";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -15,7 +15,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getDatabase(app); // Get the database instance
+const db = getDatabase(app);  
 
 export function saveMeal({ mealName, recipe, mealType, day }, callback) {
     const mealsRef = ref(db, 'meals/' + day);
@@ -24,7 +24,7 @@ export function saveMeal({ mealName, recipe, mealType, day }, callback) {
       recipe,
       mealType
     }).then(() => {
-      callback();  // Call the callback to refresh the state
+      callback();   
     }).catch(error => {
       console.error('Error saving meal: ', error);
     });
@@ -35,14 +35,82 @@ export const fetchMealsForDay = (day, callback) => {
     onValue(mealsRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        const meals = Object.values(data).map(item => item.mealName); // Map over the meals and return meal names
-        callback(meals); // Execute callback with meals data
+        const meals = Object.values(data).map(item => item.mealName);  
+        callback(meals);  
       } else {
-        callback([]); // Return an empty array if no meals
+        callback([]);  
       }
     }, {
-      onlyOnce: true // Remove this if you want to listen to real-time changes
+      onlyOnce: true
     });
   };
   
+  export const fetchPantryItems = (callback) => {
+    const pantryRef = ref(db, 'pantryItems/');
+    onValue(pantryRef, (snapshot) => {
+      const data = snapshot.val();
+      console.log('Fetch Pantry Items:', data);  
+      const pantryItems = data ? Object.entries(data).map(([key, value]) => ({
+        id: key,
+        ...value
+      })) : [];
+      callback(pantryItems);
+    });
+  };
+
+  
+  export const addPantryItem = (item, callback) => {
+    const pantryRef = ref(db, 'pantryItems/');
+    push(pantryRef, item).then(() => {
+      console.log('Added Pantry Item:', item);  
+      callback();
+    }).catch(error => {
+      console.error('Error adding pantry item:', error);
+    });
+  };
+  
+  export const updatePantryItem = (itemId, itemData, callback) => {
+    const itemRef = ref(db, `pantryItems/${itemId}`);
+    set(itemRef, itemData).then(() => {
+      console.log('Updated Pantry Item:', itemId, itemData); 
+      callback();
+    }).catch(error => {
+      console.error('Error updating pantry item:', error);
+    });
+  };
+  
+  export const removePantryItem = (itemId, callback) => {
+    const itemRef = ref(db, `pantryItems/${itemId}`);
+    remove(itemRef).then(() => {
+      console.log('Removed Pantry Item:', itemId);  
+      callback();
+    }).catch(error => {
+      console.error('Error removing pantry item:', error);
+    });
+  };
+  
+  export const fetchMeals = (callback) => {
+    const mealsRef = ref(db, 'meals/');
+    onValue(mealsRef, (snapshot) => {
+      const data = snapshot.val();
+      const meals = data ? Object.entries(data).flatMap(([dayKey, dayMeals]) => {
+        return Object.entries(dayMeals).map(([mealKey, mealValue]) => {
+          return { id: mealKey, dayId: dayKey, ...mealValue };
+        });
+      }) : [];
+      console.log('Meals fetched:', meals);
+      callback(meals);
+    });
+  };
+  
+  
+  export const updateMeal = (mealId, mealData, callback) => {
+    const mealRef = ref(db, `meals/${mealId}`);
+    set(mealRef, mealData).then(callback);
+  };
+  
+  export const removeMeal = (mealId, callback) => {
+    const mealRef = ref(db, `meals/${mealId}`);
+    remove(mealRef).then(callback);
+  };
   

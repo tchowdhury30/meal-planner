@@ -8,7 +8,7 @@ const DayCard = ({ day }) => {
   const [meals, setMeals] = useState([]);
 
   useEffect(() => {
-    fetchMealsForDay(day, setMeals); // Fetch meals on day change
+    fetchMealsForDay(day, setMeals); 
   }, [day]);
 
   const handleToggleForm = () => {
