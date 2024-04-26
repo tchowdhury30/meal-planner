@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, push } from "firebase/database";
+import { getDatabase, ref, push, onValue } from "firebase/database";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -17,16 +17,32 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app); // Get the database instance
 
-export function saveMeal({ mealName, recipe, mealType, day }) {
-    // type="button"
+export function saveMeal({ mealName, recipe, mealType, day }, callback) {
     const mealsRef = ref(db, 'meals/' + day);
     push(mealsRef, {
       mealName,
       recipe,
       mealType
     }).then(() => {
-    //   console.log('Meal saved successfully!');
+      callback();  // Call the callback to refresh the state
     }).catch(error => {
       console.error('Error saving meal: ', error);
     });
 }
+
+export const fetchMealsForDay = (day, callback) => {
+    const mealsRef = ref(db, 'meals/' + day);
+    onValue(mealsRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const meals = Object.values(data).map(item => item.mealName); // Map over the meals and return meal names
+        callback(meals); // Execute callback with meals data
+      } else {
+        callback([]); // Return an empty array if no meals
+      }
+    }, {
+      onlyOnce: true // Remove this if you want to listen to real-time changes
+    });
+  };
+  
+  
