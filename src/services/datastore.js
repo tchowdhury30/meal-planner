@@ -104,13 +104,19 @@ export const fetchMealsForDay = (day, callback) => {
   };
   
   
-  export const updateMeal = (mealId, mealData, callback) => {
-    const mealRef = ref(db, `meals/${mealId}`);
+  export const updateMeal = (dayId, mealId, mealData, callback) => {
+    const mealRef = ref(db, `meals/${dayId}/${mealId}`);
     set(mealRef, mealData).then(callback);
   };
   
-  export const removeMeal = (mealId, callback) => {
-    const mealRef = ref(db, `meals/${mealId}`);
-    remove(mealRef).then(callback);
+  export const removeMeal = (dayId, mealId, callback) => {
+    const mealRef = ref(db, `meals/${dayId}/${mealId}`);
+    return remove(mealRef).then(() => {
+      console.log('Meal successfully deleted:', mealId, dayId);
+      callback();
+    }).catch(error => {
+      console.error('Error removing meal:', mealId, error);
+      throw error;
+    });
   };
   

@@ -1,11 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import WeekCalendar from './WeekCalendar';
 
-const MealPlanner = () => {
+// eslint-disable-next-line react/prop-types
+const MealPlanner = ({gotMeals, setGotMeals}) => {
+  useEffect(() => {
+    console.log("Got Meals from meal planner", gotMeals)
+  }, [gotMeals]);
+
   return (
     <div>
       <h1>Weekly Meal Planner</h1>
-      <WeekCalendar />
+      <WeekCalendar gotMeals={gotMeals} setGotMeals={setGotMeals}/>
     </div>
   );
 };

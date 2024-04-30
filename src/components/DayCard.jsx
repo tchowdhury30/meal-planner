@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import AddMealForm from './AddMeal';
 import { fetchMealsForDay } from '../services/datastore';
 
-const DayCard = ({ day }) => {
+// eslint-disable-next-line react/prop-types
+const DayCard = ({ day, gotMeals, setGotMeals}) => {
   const [showForm, setShowForm] = useState(false);
   const [meals, setMeals] = useState([]);
 
   useEffect(() => {
-    fetchMealsForDay(day, setMeals); 
-  }, [day]);
+    fetchMealsForDay(day, setMeals);
+    console.log("got meals from day card", gotMeals)
+  }, [gotMeals]);
 
   const handleToggleForm = () => {
     setShowForm(!showForm);
@@ -19,7 +21,7 @@ const DayCard = ({ day }) => {
     <div style={{ margin: '10px', padding: '20px', border: '1px solid gray', cursor: 'pointer' }}>
       <h4>{day}</h4>
       <button onClick={handleToggleForm}>{showForm ? 'Cancel' : 'Add Meal'}</button>
-      {showForm && <AddMealForm day={day} closeForm={() => setShowForm(false)} />}
+      {showForm && <AddMealForm day={day} closeForm={() => setShowForm(false)} gotMeals={gotMeals} setGotMeals={setGotMeals}/>}
       {!showForm && (
         <div>
           <ul>

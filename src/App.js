@@ -1,15 +1,21 @@
 import './App.css';
-import React from 'react';
+import React, { useState } from 'react';
 import MealPlanner from './components/MealPlanner'; 
 import Pantry from './components/Pantry';
-import MealsManager from './components/MealsManager';
+ import MealsList from './components/MealsList';
+import { useEffect } from 'react';
 
 function App() {
+  const [gotMeals, setGotMeals] = useState(0);
+  useEffect(() => {
+    console.log("Got Meals", gotMeals)
+  }, [gotMeals]);
+
   return (
     <div className="App">
-      <MealPlanner />
+      <MealPlanner gotMeals={gotMeals} setGotMeals={setGotMeals}/>
       <Pantry />
-      <MealsManager />
+      <MealsList gotMeals={gotMeals} setGotMeals={setGotMeals}/> 
     </div>
   );
 }
