@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 import * as mealServices from './mealServices'; 
 import * as pantryServices from './pantryServices'; 
 import * as spoonacularAPI from './spoonacularApi';
@@ -36,6 +36,7 @@ const useMealStore = create((set, get) => ({
   // Fetch data
   fetchMealList: () => mealServices.fetchMeals(meals => set({ mealList: meals || [] })),
   fetchPantryItems: async () => {
+    // console.log("Fetching pantry items...");
     set({ isLoading: true });
     try {
       const items = await pantryServices.fetchPantryItems();
@@ -44,18 +45,28 @@ const useMealStore = create((set, get) => ({
       set({ error: error.message, isLoading: false });
     }
   },
+// Recipe fetching
+fetchRecipesBasedOnPantry: async (pantryItems) => {
+  set({ isLoading: true });
+  try {
+    const ingredients = pantryItems
+      .map(item => item.name.trim())  
+      .filter(name => name) 
+      .join(",");
 
-  // Recipe fetching
-  fetchRecipesBasedOnPantry: async () => {
-    set({ isLoading: true });
-    try {
-      const ingredients = get().pantryItems.map(item => item.name).join(",");
+    if (ingredients) {
       const recipes = await spoonacularAPI.fetchRecipesByIngredients(ingredients);
+      console.log("Recipes fetched successfully:", recipes);
       set({ recipes, isLoading: false });
-    } catch (error) {
-      set({ error: error.message, isLoading: false });
+    } else {
+      console.error("No valid ingredients to fetch recipes for.");
+      set({ recipes: [], isLoading: false });
     }
-  },
+  } catch (error) {
+    console.error("Error fetching recipes:", error);
+    set({ error: error.message, isLoading: false });
+  }
+},
 
   // Meal Editing
   initiateMealEdit: meal => {
