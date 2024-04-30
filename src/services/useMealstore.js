@@ -1,126 +1,86 @@
 import create from 'zustand';
-import { fetchMeals, updateMeal, removeMeal } from './datastore';
-import { fetchPantryItems as fetchPantryItemsAPI, fetchRecipesByIngredients } from './datastore';
+import * as mealServices from './mealServices'; 
+import * as pantryServices from './pantryServices'; 
+import * as spoonacularAPI from './spoonacularApi';
 
 const useMealStore = create((set, get) => ({
   mealName: '',
   mealType: '',
   recipeDetails: { ingredients: [], steps: [] },
-
   mealList: [],
   editingMealId: null,
   editedMeal: { name: '', description: '' },
-
   pantryItems: [],
   recipes: [],
   isLoading: false,
   error: null,
 
-  setPantryItems: (items) => set({ pantryItems: items }),
-  setRecipes: (recipes) => set({ recipes }),
-  setIsLoading: (isLoading) => set({ isLoading }),
-  setError: (error) => set({ error }),
-
+  // Meal and Pantry Functions
+  setMealName: name => set({ mealName: name }),
+  setMealType: type => set({ mealType: type }),
+  setRecipeDetails: details => set({ recipeDetails: details }),
+  addIngredient: ingredient => set(state => ({
+    recipeDetails: {
+      ...state.recipeDetails,
+      ingredients: [...state.recipeDetails.ingredients, ingredient],
+    }
+  })),
+  addStep: step => set(state => ({
+    recipeDetails: {
+      ...state.recipeDetails,
+      steps: [...state.recipeDetails.steps, step],
+    }
+  })),
+  resetMealCreation: () => set({ mealName: '', mealType: '', recipeDetails: { ingredients: [], steps: [] } }),
+  
+  // Fetch data
+  fetchMealList: () => mealServices.fetchMeals(meals => set({ mealList: meals || [] })),
   fetchPantryItems: async () => {
+    set({ isLoading: true });
     try {
-      set({ isLoading: true });
-      const items = await fetchPantryItemsAPI();
+      const items = await pantryServices.fetchPantryItems();
       set({ pantryItems: items, isLoading: false });
     } catch (error) {
       set({ error: error.message, isLoading: false });
     }
   },
 
+  // Recipe fetching
   fetchRecipesBasedOnPantry: async () => {
+    set({ isLoading: true });
     try {
-      set({ isLoading: true });
       const ingredients = get().pantryItems.map(item => item.name).join(",");
-      const recipes = await fetchRecipesByIngredients(ingredients);
+      const recipes = await spoonacularAPI.fetchRecipesByIngredients(ingredients);
       set({ recipes, isLoading: false });
     } catch (error) {
       set({ error: error.message, isLoading: false });
     }
   },
 
-  setMealName: (name) => set(() => ({ mealName: name })),
-  setMealType: (type) => set(() => ({ mealType: type })),
-  setRecipeDetails: (details) => set(() => ({ recipeDetails: details })),
-  addIngredient: (ingredient) => set((state) => ({
-    recipeDetails: {
-      ...state.recipeDetails,
-      ingredients: [...state.recipeDetails.ingredients, ingredient],
-    },
-  })),
-  addStep: (step) => set((state) => ({
-    recipeDetails: {
-      ...state.recipeDetails,
-      steps: [...state.recipeDetails.steps, step],
-    },
-  })),
-  resetMealCreation: () => set(() => ({ mealName: '', mealType: '', recipeDetails: { ingredients: [], steps: [] } })),
-
-  fetchMealList: () => {
-    fetchMeals((fetchedMeals) => {
-      set({ mealList: fetchedMeals || [] });
-    });
+  // Meal Editing
+  initiateMealEdit: meal => {
+    const mealToEdit = get().mealList.find(m => m.id === meal.id);
+    mealToEdit ? set({
+      editingMealId: meal.id,
+      editedMeal: { name: mealToEdit.mealName, description: mealToEdit.description },
+    }) : console.error('Meal not found for editing:', meal);
   },
-    initiateMealEdit: (meal) => {
-    const mealToEdit = get().mealList.find((m) => m.id === meal.id);
-    if (mealToEdit) {
-      set({
-        editingMealId: meal.id,
-        editedMeal: { name: mealToEdit.mealName, description: mealToEdit.description },
-      });
-      console.log("Initiating edit for meal:", meal);
-    } else {
-      console.error('Meal not found for editing:', meal);
-    }
-  },
-
-  clearMealEdit: () => {
-    set({ editingMealId: null, editedMeal: { name: '', description: '' } });
-  },
-
-  commitMealEdit: (mealId) => {
+  clearMealEdit: () => set({ editingMealId: null, editedMeal: { name: '', description: '' } }),
+  commitMealEdit: async mealId => {
     const meal = get().mealList.find(m => m.id === mealId);
     if (!meal) {
       console.error('Meal not found for editing:', mealId);
-      return; 
+      return;
     }
-  
-    const { editedMeal } = get();
-    
-    if (!editedMeal.name || editedMeal.description === undefined) {
-      console.error('Required meal properties are missing');
-      return; 
-    }
-  
-    console.log(`Committing edit for mealId: ${mealId} under dayId: ${meal.dayId}`, editedMeal);
-  
-    updateMeal(meal.dayId, mealId, editedMeal).then(() => {
+    try {
+      await mealServices.updateMeal(meal.dayId, mealId, get().editedMeal);
       get().fetchMealList();
-      get().clearMealEdit();
-    }).catch(error => {
+      set({ editingMealId: null });
+    } catch (error) {
       console.error(`Error updating meal: ${mealId} under dayId: ${meal.dayId}`, error);
-    });
-  },
-  
-  
-  
-  deleteMeal: (mealId) => {
-    const meal = get().mealList.find(m => m.id === mealId);
-    if (meal) {
-      console.log(`Attempting to delete meal with mealId: ${mealId} under dayId: ${meal.dayId}`);
-      removeMeal(meal.dayId, mealId, () => {
-        console.log(`Meal with mealId: ${mealId} under dayId: ${meal.dayId} has been successfully deleted.`);
-        get().fetchMealList();
-      }).catch(error => {
-        console.error(`Error deleting meal: ${mealId} under dayId: ${meal.dayId}`, error);
-      });
-    } else {
-      console.error('Meal not found for deletion:', mealId);
     }
   },
-  }));
+}));
 
 export default useMealStore;
+

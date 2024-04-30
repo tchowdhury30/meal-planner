@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchPantryItems, addPantryItem, updatePantryItem, removePantryItem } from '../services/datastore';
+import { fetchPantryItems, addPantryItem, updatePantryItem, removePantryItem } from '../services/pantryServices'; 
 
 const Pantry = () => {
   const [pantryItems, setPantryItems] = useState([]);
@@ -17,7 +17,7 @@ const Pantry = () => {
   };
 
   const handleUpdate = (item, newQuantity) => {
-    if(newQuantity !== '') {
+    if (newQuantity !== '') {
       updatePantryItem(item.id, { ...item, quantity: newQuantity }, () => {
         fetchPantryItems(setPantryItems);
       });

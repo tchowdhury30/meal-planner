@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import useMealStore from '../services/useMealstore';
+import { removeMeal } from '../services/mealServices';
 
 // eslint-disable-next-line react/prop-types
 const MealsList = ({gotMeals, setGotMeals}) => {
@@ -10,15 +11,19 @@ const MealsList = ({gotMeals, setGotMeals}) => {
     fetchMealList,   
     // initiateMealEdit,
     clearMealEdit,
-    commitMealEdit,
-    deleteMeal,
+    commitMealEdit
   } = useMealStore((state) => state);
 
   useEffect(() => {
     fetchMealList();
     setGotMeals(gotMeals + 1)
-    console.log("Got Meals", gotMeals)
+    // console.log("Got Meals", gotMeals)
   }, [fetchMealList]);
+
+  const handleRemoveMeal = (dayId, mealId) => {
+    removeMeal(dayId, mealId, () => {
+    });
+  };
 
   return (
     <div>
@@ -48,10 +53,7 @@ const MealsList = ({gotMeals, setGotMeals}) => {
               <span>{meal.mealName}</span>
               <span>{meal.description}</span>
               {/* <button type="button" onClick={() => initiateMealEdit(meal)}>Edit</button> */}
-              <button type="button" onClick={() => {
-                deleteMeal(meal.id)
-                setGotMeals(gotMeals+1)
-              }}>Remove</button>  
+              <button type="button" onClick={() => handleRemoveMeal(meal.dayId, meal.id)}>Remove</button> 
             </div>
           )}
         </div>

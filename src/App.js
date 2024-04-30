@@ -8,7 +8,6 @@ import { useEffect } from 'react';
 function App() {
   const [gotMeals, setGotMeals] = useState(0);
   useEffect(() => {
-    console.log("Got Meals", gotMeals)
   }, [gotMeals]);
 
   return (

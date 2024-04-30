@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AddMealForm from './AddMeal';
 import RecipeSearch from './RecipeSearch';
-import { fetchMealsForDay } from '../services/datastore';
+import { fetchMealsForDay } from '../services/mealServices';   
 
 const DayCard = ({ day, gotMeals, setGotMeals }) => {
   const [showForm, setShowForm] = useState(false);
@@ -10,7 +10,7 @@ const DayCard = ({ day, gotMeals, setGotMeals }) => {
   const [viewRecipeSearch, setViewRecipeSearch] = useState(false);
 
   useEffect(() => {
-    fetchMealsForDay(day, setMeals);  // Fetch meals for the day
+    fetchMealsForDay(day, setMeals);   
   }, [day, gotMeals]);
 
   const handleAddMeal = () => {

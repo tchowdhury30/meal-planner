@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import useMealStore from '../services/useMealstore'; 
+import useMealStore from '../services/useMealstore';
+import { fetchTopIngredientsRecipes } from '../services/pantryServices';
 
 const RecipeSearch = ({ setMeals, closeSearch }) => {
-  const { pantryItems, fetchRecipesBasedOnPantry, isLoading, error } = useMealStore();
+  const { pantryItems, fetchRecipesBasedOnPantry, isLoading, error, setRecipes } = useMealStore();
   const [selectedRecipe, setSelectedRecipe] = useState(null);
 
   useEffect(() => {
@@ -12,11 +13,20 @@ const RecipeSearch = ({ setMeals, closeSearch }) => {
         if (recipes.length > 0) {
           setSelectedRecipe(recipes[0]);
         } else {
-          console.log("No direct matches, applying fallback.");
+          console.log("No direct matches, trying top ingredients...");
+          fetchTopIngredientsRecipes(pantryItems).then(fallbackRecipes => {
+            if (fallbackRecipes.length > 0) {
+              setSelectedRecipe(fallbackRecipes[0]);
+              setRecipes(fallbackRecipes); 
+            } else {
+              console.log("No recipes found with top ingredients.");
+              setSelectedRecipe(null);
+            }
+          }).catch(err => console.error("Error fetching recipes with top ingredients:", err));
         }
-      });
+      }).catch(err => console.error("Error fetching recipes based on pantry:", err));
     }
-  }, [pantryItems, fetchRecipesBasedOnPantry]);
+  }, [pantryItems, fetchRecipesBasedOnPantry, setRecipes]);
 
   const handleAddRecipeToDay = () => {
     if (selectedRecipe) {

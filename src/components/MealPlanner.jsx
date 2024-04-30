@@ -4,7 +4,7 @@ import WeekCalendar from './WeekCalendar';
 // eslint-disable-next-line react/prop-types
 const MealPlanner = ({gotMeals, setGotMeals}) => {
   useEffect(() => {
-    console.log("Got Meals from meal planner", gotMeals)
+    // console.log("Got Meals from meal planner", gotMeals)
   }, [gotMeals]);
 
   return (
