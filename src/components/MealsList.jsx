@@ -8,7 +8,7 @@ const MealsList = ({gotMeals, setGotMeals}) => {
     editingMealId,
     editedMeal,
     fetchMealList,   
-    initiateMealEdit,
+    // initiateMealEdit,
     clearMealEdit,
     commitMealEdit,
     deleteMeal,
@@ -47,7 +47,7 @@ const MealsList = ({gotMeals, setGotMeals}) => {
             <div>
               <span>{meal.mealName}</span>
               <span>{meal.description}</span>
-              <button type="button" onClick={() => initiateMealEdit(meal)}>Edit</button>
+              {/* <button type="button" onClick={() => initiateMealEdit(meal)}>Edit</button> */}
               <button type="button" onClick={() => {
                 deleteMeal(meal.id)
                 setGotMeals(gotMeals+1)

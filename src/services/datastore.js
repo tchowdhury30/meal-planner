@@ -58,6 +58,13 @@ export const fetchMealsForDay = (day, callback) => {
     });
   };
 
+  export const fetchRecipesByIngredients = async (ingredients) => {
+    const apiKey = 'dd96b00c6aa94d3dbb2fc50f9b41b009';
+    const url = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&apiKey=${apiKey}`;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Failed to fetch recipes');
+    return response.json();
+  };
   
   export const addPantryItem = (item, callback) => {
     const pantryRef = ref(db, 'pantryItems/');
@@ -106,8 +113,16 @@ export const fetchMealsForDay = (day, callback) => {
   
   export const updateMeal = (dayId, mealId, mealData, callback) => {
     const mealRef = ref(db, `meals/${dayId}/${mealId}`);
-    set(mealRef, mealData).then(callback);
-  };
+    return set(mealRef, mealData)  
+      .then(() => {
+        console.log('Meal updated successfully');
+        if (callback) callback();
+      })
+      .catch(error => {
+        console.error('Error updating meal:', error);
+        throw error; 
+      });
+  };  
   
   export const removeMeal = (dayId, mealId, callback) => {
     const mealRef = ref(db, `meals/${dayId}/${mealId}`);

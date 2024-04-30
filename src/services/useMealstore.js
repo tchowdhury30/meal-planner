@@ -1,5 +1,6 @@
 import create from 'zustand';
 import { fetchMeals, updateMeal, removeMeal } from './datastore';
+import { fetchPantryItems as fetchPantryItemsAPI, fetchRecipesByIngredients } from './datastore';
 
 const useMealStore = create((set, get) => ({
   mealName: '',
@@ -9,6 +10,37 @@ const useMealStore = create((set, get) => ({
   mealList: [],
   editingMealId: null,
   editedMeal: { name: '', description: '' },
+
+  pantryItems: [],
+  recipes: [],
+  isLoading: false,
+  error: null,
+
+  setPantryItems: (items) => set({ pantryItems: items }),
+  setRecipes: (recipes) => set({ recipes }),
+  setIsLoading: (isLoading) => set({ isLoading }),
+  setError: (error) => set({ error }),
+
+  fetchPantryItems: async () => {
+    try {
+      set({ isLoading: true });
+      const items = await fetchPantryItemsAPI();
+      set({ pantryItems: items, isLoading: false });
+    } catch (error) {
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+  fetchRecipesBasedOnPantry: async () => {
+    try {
+      set({ isLoading: true });
+      const ingredients = get().pantryItems.map(item => item.name).join(",");
+      const recipes = await fetchRecipesByIngredients(ingredients);
+      set({ recipes, isLoading: false });
+    } catch (error) {
+      set({ error: error.message, isLoading: false });
+    }
+  },
 
   setMealName: (name) => set(() => ({ mealName: name })),
   setMealType: (type) => set(() => ({ mealType: type })),
@@ -51,19 +83,29 @@ const useMealStore = create((set, get) => ({
 
   commitMealEdit: (mealId) => {
     const meal = get().mealList.find(m => m.id === mealId);
-    if (meal) {
-      console.log(`Committing edit for mealId: ${mealId} under dayId: ${meal.dayId}`, get().editedMeal);
-      const { editedMeal } = get();
-      updateMeal(meal.dayId, mealId, editedMeal, () => {
-        get().fetchMealList();
-        get().clearMealEdit();
-      }).catch(error => {
-        console.error(`Error updating meal: ${mealId} under dayId: ${meal.dayId}`, error);
-      });
-    } else {
+    if (!meal) {
       console.error('Meal not found for editing:', mealId);
+      return; 
     }
+  
+    const { editedMeal } = get();
+    
+    if (!editedMeal.name || editedMeal.description === undefined) {
+      console.error('Required meal properties are missing');
+      return; 
+    }
+  
+    console.log(`Committing edit for mealId: ${mealId} under dayId: ${meal.dayId}`, editedMeal);
+  
+    updateMeal(meal.dayId, mealId, editedMeal).then(() => {
+      get().fetchMealList();
+      get().clearMealEdit();
+    }).catch(error => {
+      console.error(`Error updating meal: ${mealId} under dayId: ${meal.dayId}`, error);
+    });
   },
+  
+  
   
   deleteMeal: (mealId) => {
     const meal = get().mealList.find(m => m.id === mealId);
