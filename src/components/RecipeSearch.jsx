@@ -11,12 +11,14 @@ const RecipeSearch = ({ setMeals, closeSearch }) => {
   useEffect(() => {
     if (pantryItems.length === 0) { 
       fetchPantryItems((pantryItems) => {
-        fetchRecipesBasedOnPantry(pantryItems).then(recipes => {
-          console.log("bruh 123", recipes.id)
-          if (recipes.id > 0) {
-            console.log("Direct matches found");
-            setSelectedRecipe(recipes);
-            parseAndSetRecipeDetails(recipes.steps);
+        fetchRecipesBasedOnPantry(pantryItems).then(data => {
+          const { recipe, recipeDetails } = data;
+          // console.log("Recipe:", recipe);
+          // console.log("Recipe details:", recipeDetails);
+          if (recipe && recipe.id > 0) {
+            // console.log("Direct matches found");
+            setSelectedRecipe(recipe);
+            parseAndSetRecipeDetails(recipeDetails);
           } else {
             console.log("No direct matches, trying top ingredients...");
             fetchTopIngredientsRecipes(pantryItems).then(fallbackRecipes => {
@@ -35,11 +37,11 @@ const RecipeSearch = ({ setMeals, closeSearch }) => {
       });
     } else {
       console.log("Pantry items are present");
-      fetchRecipesBasedOnPantry().then(recipes => {
-        console.log("Recipes fetched based on pantry:", recipes);
-        if (recipes.length > 0) {
+      fetchRecipesBasedOnPantry().then(recipe => {
+        console.log("Recipes fetched based on pantry:", recipe);
+        if (recipe.id) {
           console.log("Direct matches found");
-          setSelectedRecipe(recipes[0]);
+          setSelectedRecipe(recipe);
         } else {
           console.log("No direct matches, trying top ingredients...");
           fetchTopIngredientsRecipes(pantryItems).then(fallbackRecipes => {
@@ -71,7 +73,7 @@ const RecipeSearch = ({ setMeals, closeSearch }) => {
   
 
   const parseAndSetRecipeDetails = (recipeData) => {
-    const { setRecipeDetails } = useMealStore();
+    const { setRecipeDetails } = useMealStore.getState(); // Get state function instead of using hook directly
   
     const ingredients = [];
     const steps = [];
@@ -94,7 +96,8 @@ const RecipeSearch = ({ setMeals, closeSearch }) => {
   
     // Setting parsed data in the store
     setRecipeDetails({ ingredients, steps });
-  };
+    console.log("hahahahah", ingredients, steps);
+  };  
 
   return (
     <div>

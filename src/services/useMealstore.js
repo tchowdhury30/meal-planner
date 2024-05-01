@@ -54,15 +54,17 @@ fetchRecipesBasedOnPantry: async (pantryItems) => {
           if (recipes.id != 0 ) {
               const recipeDetails = await spoonacularAPI.fetchRecipeInstructions(recipes.id);
               set({ recipes: [recipeDetails], isLoading: false });
-              console.log("okay purrr", recipes);
+              return { recipe: recipes, recipeDetails: recipeDetails };
           } else {
               console.error("No recipes found with given ingredients.");
               set({ recipes: [], isLoading: false });
           }
+          
       } else {
           console.error("No valid ingredients to fetch recipes for.");
           set({ recipes: [], isLoading: false });
       }
+      
   } catch (error) {
       console.error("Error fetching recipes:", error);
       set({ error: error.message, isLoading: false });
