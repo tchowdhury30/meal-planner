@@ -12,9 +12,11 @@ const RecipeSearch = ({ setMeals, closeSearch }) => {
     if (pantryItems.length === 0) { 
       fetchPantryItems((pantryItems) => {
         fetchRecipesBasedOnPantry(pantryItems).then(recipes => {
-          if (recipes.length > 0) {
+          console.log("bruh 123", recipes.id)
+          if (recipes.id > 0) {
             console.log("Direct matches found");
-            setSelectedRecipe(recipes[0]);
+            setSelectedRecipe(recipes);
+            parseAndSetRecipeDetails(recipes.steps);
           } else {
             console.log("No direct matches, trying top ingredients...");
             fetchTopIngredientsRecipes(pantryItems).then(fallbackRecipes => {
@@ -58,10 +60,40 @@ const RecipeSearch = ({ setMeals, closeSearch }) => {
 
   const handleAddRecipeToDay = () => {
     console.log("Adding selected recipe to day:", selectedRecipe);
+  
     if (selectedRecipe) {
-      setMeals(meals => [...meals, {mealName: selectedRecipe.title, recipe: selectedRecipe}]);
+      parseAndSetRecipeDetails(selectedRecipe.steps);
+  
+      setMeals(meals => [...meals, { mealName: selectedRecipe.title, recipe: selectedRecipe }]);
       closeSearch();
     }
+  };
+  
+
+  const parseAndSetRecipeDetails = (recipeData) => {
+    const { setRecipeDetails } = useMealStore();
+  
+    const ingredients = [];
+    const steps = [];
+  
+    recipeData.forEach((section) => {
+      section.steps.forEach((step) => {
+        // Adding step descriptions
+        steps.push(step.step);
+  
+        // Extracting ingredients
+        step.ingredients.forEach((ingredient) => {
+          ingredients.push({
+            name: ingredient.name,
+            image: ingredient.image,
+            id: ingredient.id
+          });
+        });
+      });
+    });
+  
+    // Setting parsed data in the store
+    setRecipeDetails({ ingredients, steps });
   };
 
   return (

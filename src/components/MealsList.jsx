@@ -17,7 +17,6 @@ const MealsList = ({gotMeals, setGotMeals}) => {
   useEffect(() => {
     fetchMealList();
     setGotMeals(gotMeals + 1)
-    // console.log("Got Meals", gotMeals)
   }, [fetchMealList]);
 
   const handleRemoveMeal = (dayId, mealId) => {

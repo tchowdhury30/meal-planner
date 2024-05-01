@@ -1,19 +1,33 @@
-//const API_KEY = 'dd96b00c6aa94d3dbb2fc50f9b41b009';
-const API_KEY = 'e';
+const API_KEY = 'dd96b00c6aa94d3dbb2fc50f9b41b009';
+//const API_KEY = 'bddb74b7f9204c21b4c2c73673a2a058';
+//const API_KEY = 'fake';
 
 export const fetchRecipesByIngredients = async (ingredients) => {
-  const url = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&apiKey=${API_KEY}`;
-//   console.log('Fetching recipes by ingredients:', ingredients);
-  try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error('Failed to fetch recipes');
-    const data = await response.json();
-    console.log('Recipes fetched successfully:', data);
-    return data;
-  } catch (error) {
-    console.error('Error fetching recipes by ingredients:', error);
-    throw error; 
-  }
+    const url = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&apiKey=${API_KEY}`;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Failed to fetch recipes');
+      const recipes = await response.json();
+      //console.log('Recipes fetched successfully:', recipes);
+      return recipes[0];
+    } catch (error) {
+      console.error('Error fetching recipes by ingredients:', error);
+      throw error; 
+    }
+  };
+
+  export const fetchRecipeInstructions = async (recipeId) => {
+    const url = `https://api.spoonacular.com/recipes/${recipeId}/analyzedInstructions?apiKey=${API_KEY}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Failed to fetch recipe instructions');
+        const instructions = await response.json();
+        console.log('Recipe instructions fetched successfully:', instructions);
+        return instructions;
+    } catch (error) {
+        console.error('Error fetching recipe instructions:', error);
+        throw error;
+    }
 };
 
 export const fetchRandomRecipe = async () => {
@@ -30,3 +44,4 @@ export const fetchRandomRecipe = async () => {
     throw error; 
   }
 };
+
