@@ -74,6 +74,23 @@ export const fetchMealsForDay = (day, callback) => {
     });
   };
   
+  export const fetchMealsFromAny = (callback) => {
+    const mealsRef = ref(db, 'meals/Any');
+    onValue(mealsRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const meals = Object.values(data).map((meal, index) => ({
+          id: Object.keys(data)[index],
+          ...meal
+        }));
+        callback(meals);  
+      } else {
+        callback([]);  
+      }
+    }, {
+      onlyOnce: true
+    });
+};
 
   export const fetchMealById = (mealId, callback) => {
     const mealRef = ref(db, `meals/Any/${mealId}`);

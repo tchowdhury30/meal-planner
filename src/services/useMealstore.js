@@ -14,10 +14,12 @@ const useMealStore = create((set, get) => ({
   recipes: [],
   isLoading: false,
   error: null,
+  
 
   // Meal and Pantry Functions
   setMealName: name => set({ mealName: name }),
   setMealType: type => set({ mealType: type }),
+  setMealList: (meals) => set({ mealList: meals }),
   setRecipeDetails: details => set({ recipeDetails: details }),
   addIngredient: ingredient => set(state => ({
     recipeDetails: {

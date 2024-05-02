@@ -13,40 +13,17 @@ const DayCard = ({ day, gotMeals, setGotMeals }) => {
         fetchMeals(setAllMeals);          
     }, [day, gotMeals]);
 
-
-
-// export function saveMeal({ mealName, recipe, mealType, day }, callback) {
-//     let mealsRef;
-//     if (!day) {
-//       mealsRef = ref(db, 'meals/' + "Any");
-//     } else {
-//       mealsRef = ref(db, 'meals/' + day);
-//     }
-
-
-    // const handleAddMeal = () => {
-    //     if (selectedMealId) {
-    //       console.log("hello", selectedMealId);
-          
-    //       saveMeal({ mealId: selectedMealId, day }, () => {
-    //             console.log(`Meal added to ${day}`);
-    //             fetchMealsForDay(day, setMeals);  
-    //             setSelectedMealId('');            
-    //             setGotMeals(gotMeals + 1);        
-    //         });
-    //     }
-    // };
-
     const handleAddMeal = () => {
         if (selectedMealId) {
             fetchMealById(selectedMealId, (mealData) => {
-                console.log("he", mealData);
                 if (mealData) {
+                    console.log("trying to add", mealData);
+                    const recipeProvided = mealData.recipe || "";
                     saveMeal({
                         mealName: mealData.mealName,
-                        recipe: mealData.recipe,  
+                        recipe: recipeProvided,  
                         mealType: mealData.mealType,
-                        day
+                        day: day
                     }, () => {
                         console.log(`Meal added to ${day}`);
                         fetchMealsForDay(day, setMeals);  
