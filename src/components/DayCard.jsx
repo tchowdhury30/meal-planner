@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { fetchMealsForDay, saveMeal, fetchMeals, fetchMealById } from '../services/mealServices';
+import { fetchMealsForDay, removeMealByName, fetchMeals, fetchMealById, saveMeal } from '../services/mealServices';
 
 const DayCard = ({ day, gotMeals, setGotMeals }) => {
     const [meals, setMeals] = useState([]);
@@ -15,9 +15,9 @@ const DayCard = ({ day, gotMeals, setGotMeals }) => {
 
     const handleAddMeal = () => {
         if (selectedMealId) {
+            console.log("what the hell", selectedMealId);
             fetchMealById(selectedMealId, (mealData) => {
                 if (mealData) {
-                    console.log("trying to add", mealData);
                     const recipeProvided = mealData.recipe || "";
                     saveMeal({
                         mealName: mealData.mealName,
@@ -27,17 +27,22 @@ const DayCard = ({ day, gotMeals, setGotMeals }) => {
                     }, () => {
                         console.log(`Meal added to ${day}`);
                         fetchMealsForDay(day, setMeals);  
-                        setSelectedMealId('');            
+                        //setSelectedMealId('');            
                         setGotMeals(gotMeals + 1);        
                     });
                 } else {
                     console.error("Failed to fetch meal details for ID:", selectedMealId);
                 }
             });
-        } else {
-            console.log("No meal selected");
-            // Optionally handle the case where no meal ID is selected
         }
+    };
+
+    const handleRemoveMeal = (mealName) => {
+        removeMealByName(day, mealName, () => {
+            console.log("hehehe", day, mealName);
+            fetchMealsForDay(day, setMeals);  
+            setGotMeals(gotMeals - 1);       
+        });
     };
 
     const toggleMealSelector = () => {
@@ -60,7 +65,12 @@ const DayCard = ({ day, gotMeals, setGotMeals }) => {
                 </div>
             )}
             <ul>
-                {meals.map((meal, index) => <li key={index}>{meal}</li>)}
+                {meals.map((meal) => (
+                    <li key={meal}>
+                        {meal}
+                        <button onClick={() => handleRemoveMeal(meal)}>Remove</button> 
+                    </li>
+                ))}
             </ul>
         </div>
     );

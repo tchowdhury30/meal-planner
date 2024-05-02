@@ -106,3 +106,40 @@ export const fetchMealsForDay = (day, callback) => {
         onlyOnce: true
     });
 };
+
+export const removeMealByName = (day, mealName, callback) => {
+  const mealsRef = ref(db, `meals/${day}`);
+
+  // Fetch all meals for the given day
+  onValue(mealsRef, (snapshot) => {
+      const mealsData = snapshot.val();
+
+      if (mealsData) {
+          const meals = Object.entries(mealsData).map(([key, value]) => ({
+              id: key,
+              ...value
+          }));
+
+          const mealToRemove = meals.find(meal => meal.mealName === mealName);
+
+          if (mealToRemove) {
+              const mealRef = ref(db, `meals/${day}/${mealToRemove.id}`);
+              remove(mealRef).then(() => {
+                  console.log("Meal successfully deleted:", mealToRemove.mealName, day);
+                  callback(true); 
+              }).catch(error => {
+                  console.error("Error removing meal:", error);
+                  callback(false, error); 
+              });
+          } else {
+              console.log("No meal found with the name:", mealName);
+              callback(false); 
+          }
+      } else {
+          console.log("No meals found on the day:", day);
+          callback(false); 
+      }
+  }, {
+      onlyOnce: true
+  });
+};
