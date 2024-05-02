@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import useMealStore from '../services/useMealstore';
 import Recipe from './Recipe';
 import { saveMeal } from '../services/mealServices'; 
-// import RecipeSearch from './RecipeSearch';
 
 const AddMeal = ({ day, closeForm, gotMeals, setGotMeals }) => {
   const {
@@ -14,15 +13,14 @@ const AddMeal = ({ day, closeForm, gotMeals, setGotMeals }) => {
     recipeDetails,
     resetMealCreation
   } = useMealStore();
-  // const [showRecipeSearch, setShowRecipeSearch] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Use day prop directly since it will default to "Any" if not provided
     saveMeal({ mealName, recipe: recipeDetails, mealType, day }, () => {
       console.log(`Meal added: ${mealName}, Type: ${mealType}, Recipe: ${JSON.stringify(recipeDetails)}, on ${day}`);
       resetMealCreation();
       closeForm();
-      // setShowRecipeSearch(true);
       setGotMeals(gotMeals + 1);
     });
   };
@@ -42,16 +40,21 @@ const AddMeal = ({ day, closeForm, gotMeals, setGotMeals }) => {
         <button type="submit">Add Meal</button>
         <button type="button" onClick={closeForm}>Cancel</button>
       </form>
-      {/* {showRecipeSearch && <RecipeSearch closeSearch={closeForm} day={day} />} */}
     </div>
   );
 };
 
+// Define PropTypes
 AddMeal.propTypes = {
   day: PropTypes.string.isRequired,
   closeForm: PropTypes.func.isRequired,
   gotMeals: PropTypes.number.isRequired,
   setGotMeals: PropTypes.func.isRequired
+};
+
+// Set default props
+AddMeal.defaultProps = {
+  day: 'Any'
 };
 
 export default AddMeal;

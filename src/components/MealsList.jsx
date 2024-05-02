@@ -25,7 +25,7 @@ const MealsList = ({gotMeals, setGotMeals}) => {
   const toggleAddMealForm = () => setShowAddMealForm(!showAddMealForm);
 
   const handleRemoveMeal = (dayId, mealId) => {
-    removeMeal('any', mealId, () => {
+    removeMeal(dayId, mealId, () => {
     });
   };
 
@@ -61,7 +61,7 @@ const MealsList = ({gotMeals, setGotMeals}) => {
               <span>{meal.mealName}</span>
               <span>{meal.description}</span>
               {/* <button type="button" onClick={() => initiateMealEdit(meal)}>Edit</button> */}
-              <button type="button" onClick={() => handleRemoveMeal('any', meal.id)}>Remove</button> 
+              <button type="button" onClick={() => handleRemoveMeal(meal.dayId, meal.id)}>Remove</button> 
             </div>
           )}
         </div>
