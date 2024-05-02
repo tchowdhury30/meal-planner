@@ -2,7 +2,12 @@ import { ref, push, onValue, set, remove } from "firebase/database";
 import { db } from './firebaseConfig';
 
 export function saveMeal({ mealName, recipe, mealType, day }, callback) {
-    const mealsRef = ref(db, 'meals/' + day);
+  let mealsRef;
+  if (!day) {
+    mealsRef = ref(db, 'meals/' + "Any");
+  } else {
+    mealsRef = ref(db, 'meals/' + day);
+  }
     push(mealsRef, {
       mealName,
       recipe,

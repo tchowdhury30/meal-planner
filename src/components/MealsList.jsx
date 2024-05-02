@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import useMealStore from '../services/useMealstore';
 import { removeMeal } from '../services/mealServices';
+import AddMealForm from './AddMeal';
 
 // eslint-disable-next-line react/prop-types
 const MealsList = ({gotMeals, setGotMeals}) => {
@@ -14,19 +15,27 @@ const MealsList = ({gotMeals, setGotMeals}) => {
     commitMealEdit
   } = useMealStore((state) => state);
 
+  const [showAddMealForm, setShowAddMealForm] = useState(false);
+
   useEffect(() => {
     fetchMealList();
     setGotMeals(gotMeals + 1)
   }, [fetchMealList]);
 
+  const toggleAddMealForm = () => setShowAddMealForm(!showAddMealForm);
+
   const handleRemoveMeal = (dayId, mealId) => {
-    removeMeal(dayId, mealId, () => {
+    removeMeal('any', mealId, () => {
     });
   };
 
   return (
     <div>
       <h2>Meals List</h2>
+      <button onClick={toggleAddMealForm}>
+        {showAddMealForm ? 'Cancel Add Meal' : 'Add Meal'}
+      </button>
+      {showAddMealForm && <AddMealForm closeForm={() => setShowAddMealForm(false)} gotMeals={gotMeals} setGotMeals={setGotMeals} />}
       {mealList.map((meal) => (   
         <div key={meal.id}>
           {editingMealId === meal.id ? (
@@ -52,7 +61,7 @@ const MealsList = ({gotMeals, setGotMeals}) => {
               <span>{meal.mealName}</span>
               <span>{meal.description}</span>
               {/* <button type="button" onClick={() => initiateMealEdit(meal)}>Edit</button> */}
-              <button type="button" onClick={() => handleRemoveMeal(meal.dayId, meal.id)}>Remove</button> 
+              <button type="button" onClick={() => handleRemoveMeal('any', meal.id)}>Remove</button> 
             </div>
           )}
         </div>
