@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import useMealStore from '../services/useMealstore';
 import { removeMeal, fetchMealsFromAny } from '../services/mealServices';  // Import fetchMealsFromAny
 import AddMealForm from './AddMeal';
+import RecipeSearch from './RecipeSearch'; 
 
 // eslint-disable-next-line react/prop-types
 const MealsList = ({ gotMeals, setGotMeals }) => {
@@ -11,16 +12,19 @@ const MealsList = ({ gotMeals, setGotMeals }) => {
     editingMealId,
     editedMeal,
     clearMealEdit,
-    commitMealEdit
+    commitMealEdit, 
+    pantryItems
   } = useMealStore((state) => state);
 
   const [showAddMealForm, setShowAddMealForm] = useState(false);
+  const [showRecipeSearch, setShowRecipeSearch] = useState(false); 
 
   useEffect(() => {
     fetchMealsFromAny(setMealList);
   }, [setMealList, gotMeals]);
 
   const toggleAddMealForm = () => setShowAddMealForm(!showAddMealForm);
+  const toggleRecipeSearch = () => setShowRecipeSearch(!showRecipeSearch);
 
   const handleRemoveMeal = (dayId, mealId) => {
     removeMeal(dayId, mealId, () => {
@@ -34,7 +38,9 @@ const MealsList = ({ gotMeals, setGotMeals }) => {
       <button onClick={toggleAddMealForm}>
         {showAddMealForm ? 'Cancel Add Meal' : 'Add Meal'}
       </button>
+      <button onClick={toggleRecipeSearch}>{showRecipeSearch ? 'Hide Suggestions' : 'Show Suggestions'}</button>
       {showAddMealForm && <AddMealForm closeForm={() => setShowAddMealForm(false)} gotMeals={gotMeals} setGotMeals={setGotMeals} />}
+      {showRecipeSearch && <RecipeSearch closeSearch={() => setShowRecipeSearch(false)} pantryItems={pantryItems} />}
       {mealList.map((meal) => (
         <div key={meal.id}>
           {editingMealId === meal.id ? (

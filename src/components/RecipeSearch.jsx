@@ -5,7 +5,7 @@ import { saveMeal } from '../services/mealServices';
 import { fetchTopIngredientsRecipes, fetchPantryItems } from '../services/pantryServices';
 
 
-const RecipeSearch = ({ closeSearch, day }) => {
+const RecipeSearch = ({ closeSearch }) => {
   const { pantryItems, fetchRecipesBasedOnPantry, isLoading, error, setRecipes } = useMealStore();
   const [selectedRecipe, setSelectedRecipe] = useState(null);
 
@@ -14,10 +14,8 @@ const RecipeSearch = ({ closeSearch, day }) => {
       fetchPantryItems((pantryItems) => {
         fetchRecipesBasedOnPantry(pantryItems).then(data => {
           const { recipe, recipeDetails } = data;
-          // console.log("Recipe:", recipe);
-          // console.log("Recipe details:", recipeDetails);
           if (recipe && recipe.id > 0) {
-            // console.log("Direct matches found");
+
             setSelectedRecipe(recipe);
             parseAndSetRecipeDetails(recipeDetails);
           } else {
@@ -88,7 +86,7 @@ const RecipeSearch = ({ closeSearch, day }) => {
         mealName: selectedRecipe.title,
         recipe: newRecipe,
         mealType: newRecipe.type, 
-        day: day, 
+        day: 'Any', 
       }, () => {
         console.log('Meal saved successfully');
       });
@@ -140,7 +138,6 @@ const RecipeSearch = ({ closeSearch, day }) => {
 
 RecipeSearch.propTypes = {
   closeSearch: PropTypes.func.isRequired,
-  day: PropTypes.string.isRequired
 };
 
 export default RecipeSearch;
