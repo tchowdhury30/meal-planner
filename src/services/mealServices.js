@@ -74,4 +74,18 @@ export const fetchMealsForDay = (day, callback) => {
     });
   };
   
-  
+
+  export const fetchMealById = (mealId, callback) => {
+    const mealRef = ref(db, `meals/Any/${mealId}`);
+    onValue(mealRef, (snapshot) => {
+        const mealData = snapshot.val();
+        if (mealData) {
+            callback(mealData);
+        } else {
+            console.error("No meal found with ID:", mealId);
+            callback(null); 
+        }
+    }, {
+        onlyOnce: true
+    });
+};
