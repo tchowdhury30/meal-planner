@@ -1,9 +1,9 @@
-import './App.css';
-import React, { useState } from 'react';
-import MealPlanner from './components/MealPlanner'; 
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import MealPlanner from './components/MealPlanner';
 import Pantry from './components/Pantry';
- import MealsList from './components/MealsList';
-import { useEffect } from 'react';
+import MealsList from './components/MealsList';
+import './App.css';
 
 function App() {
   const [gotMeals, setGotMeals] = useState(0);
@@ -11,11 +11,20 @@ function App() {
   }, [gotMeals]);
 
   return (
-    <div className="App">
-      <MealPlanner gotMeals={gotMeals} setGotMeals={setGotMeals}/>
-      <Pantry />
-      <MealsList gotMeals={gotMeals} setGotMeals={setGotMeals}/> 
-    </div>
+    <Router>
+      <div className="App">
+        <nav className="navbar">
+          <Link className="nav-link" to="/">Weekly Meal Planner</Link>
+          <Link className="nav-link" to="/pantry">My Pantry</Link>
+          <Link className="nav-link" to="/meals-list">Meals List</Link>
+        </nav>
+        <Routes>
+          <Route path="/" element={<MealPlanner gotMeals={gotMeals} setGotMeals={setGotMeals}/>} />
+          <Route path="/pantry" element={<Pantry />} />
+          <Route path="/meals-list" element={<MealsList gotMeals={gotMeals} setGotMeals={setGotMeals} />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
