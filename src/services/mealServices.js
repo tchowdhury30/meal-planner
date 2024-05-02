@@ -143,3 +143,28 @@ export const removeMealByName = (day, mealName, callback) => {
       onlyOnce: true
   });
 };
+
+export const fetchMealByName = (mealName, callback) => {
+  const mealsRef = ref(db, 'meals/Any'); // Adjust the path as necessary for your database structure
+  onValue(mealsRef, (snapshot) => {
+      const mealsData = snapshot.val();
+      let found = false;
+      if (mealsData) {
+          Object.entries(mealsData).forEach(([key, value]) => {
+              if (value.mealName.toLowerCase() === mealName.toLowerCase()) {
+                  callback({ id: key, ...value }, null);
+                  found = true;
+              }
+          });
+          if (!found) {
+              console.error("No meal found with the name:", mealName);
+              callback(null, "No meal found with the name: " + mealName);
+          }
+      } else {
+          console.error("No meals found");
+          callback(null, "No meals found");
+      }
+  }, {
+      onlyOnce: true
+  });
+};

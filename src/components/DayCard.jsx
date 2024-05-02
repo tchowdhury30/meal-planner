@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { fetchMealsForDay, removeMealByName, fetchMeals, fetchMealById, saveMeal } from '../services/mealServices';
+import { useNavigate } from 'react-router-dom';
 
 const DayCard = ({ day, gotMeals, setGotMeals }) => {
     const [meals, setMeals] = useState([]);
     const [allMeals, setAllMeals] = useState([]);
     const [selectedMealId, setSelectedMealId] = useState('');
     const [showMealSelector, setShowMealSelector] = useState(false);
+    const navigate = useNavigate();  
 
     useEffect(() => {
         fetchMealsForDay(day, setMeals);   
@@ -49,6 +51,10 @@ const DayCard = ({ day, gotMeals, setGotMeals }) => {
         setShowMealSelector(!showMealSelector);
     };
 
+    const viewMealDetails = (mealName) => {
+        navigate(`/meal-details/${encodeURIComponent(mealName)}`);
+    };    
+
     return (
         <div style={{ margin: '10px', padding: '20px', border: '1px solid gray', cursor: 'pointer' }}>
             <h4>{day}</h4>
@@ -69,6 +75,7 @@ const DayCard = ({ day, gotMeals, setGotMeals }) => {
                     <li key={meal}>
                         {meal}
                         <button onClick={() => handleRemoveMeal(meal)}>Remove</button> 
+                        <button onClick={() => viewMealDetails(meal)}>View Details</button>
                     </li>
                 ))}
             </ul>
