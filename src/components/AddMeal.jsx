@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import useMealStore from '../services/useMealstore';
 import Recipe from './Recipe';
 import { saveMeal } from '../services/mealServices'; 
-import RecipeSearch from './RecipeSearch';
+// import RecipeSearch from './RecipeSearch';
 
 const AddMeal = ({ day, closeForm, gotMeals, setGotMeals }) => {
   const {
@@ -14,7 +14,7 @@ const AddMeal = ({ day, closeForm, gotMeals, setGotMeals }) => {
     recipeDetails,
     resetMealCreation
   } = useMealStore();
-  const [showRecipeSearch, setShowRecipeSearch] = useState(false);
+  // const [showRecipeSearch, setShowRecipeSearch] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,7 +22,7 @@ const AddMeal = ({ day, closeForm, gotMeals, setGotMeals }) => {
       console.log(`Meal added: ${mealName}, Type: ${mealType}, Recipe: ${JSON.stringify(recipeDetails)}, on ${day}`);
       resetMealCreation();
       closeForm();
-      setShowRecipeSearch(true);
+      // setShowRecipeSearch(true);
       setGotMeals(gotMeals + 1);
     });
   };
@@ -42,7 +42,7 @@ const AddMeal = ({ day, closeForm, gotMeals, setGotMeals }) => {
         <button type="submit">Add Meal</button>
         <button type="button" onClick={closeForm}>Cancel</button>
       </form>
-      {showRecipeSearch && <RecipeSearch />}
+      {/* {showRecipeSearch && <RecipeSearch closeSearch={closeForm} day={day} />} */}
     </div>
   );
 };

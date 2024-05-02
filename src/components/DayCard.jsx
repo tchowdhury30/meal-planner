@@ -31,7 +31,7 @@ const DayCard = ({ day, gotMeals, setGotMeals }) => {
       <button onClick={handleAddMeal}>{showForm ? 'Cancel' : 'Add Meal'}</button>
       <button onClick={handleShowRecipeSearch}>{viewRecipeSearch ? 'Hide Suggestions' : 'Show Suggestions'}</button>
       {showForm && <AddMealForm day={day} closeForm={() => setShowForm(false)} gotMeals={gotMeals} setGotMeals={setGotMeals} />}
-      {viewRecipeSearch && <RecipeSearch setMeals={setMeals} closeSearch={() => setViewRecipeSearch(false)} pantryItems={pantryItems} />} 
+      {viewRecipeSearch && <RecipeSearch day={day} closeSearch={() => setViewRecipeSearch(false)} pantryItems={pantryItems} />} 
       {!showForm && !viewRecipeSearch && (
         <ul>
           {meals.map((meal, index) => <li key={index}>{meal}</li>)}

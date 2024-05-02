@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import useMealStore from '../services/useMealstore';
+import { saveMeal } from '../services/mealServices'; 
 import { fetchTopIngredientsRecipes, fetchPantryItems } from '../services/pantryServices';
 
 
-const RecipeSearch = ({ setMeals, closeSearch }) => {
+const RecipeSearch = ({ closeSearch, day }) => {
   const { pantryItems, fetchRecipesBasedOnPantry, isLoading, error, setRecipes } = useMealStore();
   const [selectedRecipe, setSelectedRecipe] = useState(null);
 
@@ -59,31 +60,54 @@ const RecipeSearch = ({ setMeals, closeSearch }) => {
       }).catch(err => console.error("Error fetching recipes based on pantry:", err));
     }
   }, [pantryItems, fetchRecipesBasedOnPantry, setRecipes]);  
-
+  
   const handleAddRecipeToDay = () => {
-    console.log("Adding selected recipe to day:", selectedRecipe);
+    
+    if (selectedRecipe.id > 0) {
+      const { recipeDetails } = useMealStore.getState();
   
-    if (selectedRecipe) {
-      parseAndSetRecipeDetails(selectedRecipe.steps);
+      console.log('w',selectedRecipe );
+      const newRecipe = {
+        title: selectedRecipe.title,
+        steps: recipeDetails.steps,
+        ingredients: recipeDetails.ingredients,
+        type: "edit type"
+      };
+
+      console.log('a2ttempting',newRecipe);
   
-      setMeals(meals => [...meals, { mealName: selectedRecipe.title, recipe: selectedRecipe }]);
+      recipeDetails.ingredients.forEach(ingredient => {
+        useMealStore.getState().addIngredient(ingredient.name);
+      });
+  
+      recipeDetails.steps.forEach(step => {
+        useMealStore.getState().addStep(step);
+      });
+      console.log('attempting',newRecipe);
+      saveMeal({
+        mealName: selectedRecipe.title,
+        recipe: newRecipe,
+        mealType: newRecipe.type, 
+        day: day, 
+      }, () => {
+        console.log('Meal saved successfully');
+      });
+     
       closeSearch();
     }
   };
   
 
   const parseAndSetRecipeDetails = (recipeData) => {
-    const { setRecipeDetails } = useMealStore.getState(); // Get state function instead of using hook directly
+    const { setRecipeDetails } = useMealStore.getState();
   
     const ingredients = [];
     const steps = [];
   
     recipeData.forEach((section) => {
       section.steps.forEach((step) => {
-        // Adding step descriptions
         steps.push(step.step);
   
-        // Extracting ingredients
         step.ingredients.forEach((ingredient) => {
           ingredients.push({
             name: ingredient.name,
@@ -93,10 +117,8 @@ const RecipeSearch = ({ setMeals, closeSearch }) => {
         });
       });
     });
-  
-    // Setting parsed data in the store
+
     setRecipeDetails({ ingredients, steps });
-    console.log("hahahahah", ingredients, steps);
   };  
 
   return (
@@ -117,8 +139,8 @@ const RecipeSearch = ({ setMeals, closeSearch }) => {
 };
 
 RecipeSearch.propTypes = {
-  setMeals: PropTypes.func.isRequired,
-  closeSearch: PropTypes.func.isRequired
+  closeSearch: PropTypes.func.isRequired,
+  day: PropTypes.string.isRequired
 };
 
 export default RecipeSearch;
