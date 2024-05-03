@@ -4,9 +4,11 @@ import MealPlanner from './components/MealPlanner';
 import Pantry from './components/Pantry';
 import MealsList from './components/MealsList';
 import MealDetails from './components/MealDetails';
+import EditMealDetails from './components/EditMealDetails';
 import mealPlannerIcon from './img/plan-nav.png';
 import pantryIcon from './img/pantry-nav.png';
 import mealsListIcon from './img/meal-nav.png';
+
 
 import './styles/App.scss';
 
@@ -37,6 +39,7 @@ function App() {
           <Route path="/pantry" element={<Pantry />} />
           <Route path="/meals-list" element={<MealsList gotMeals={gotMeals} setGotMeals={setGotMeals} />} />
           <Route path="/meal-details/:mealName" element={<MealDetails />} />
+          <Route path="/meal-details/:mealName/edit" element={<EditMealDetails />} />
         </Routes>
       </div>
     </Router>

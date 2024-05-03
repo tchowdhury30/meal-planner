@@ -32,6 +32,12 @@ $font-family: 'Ubuntu Mono', monospace;
             font-size: 20px;
             margin-bottom: $spacing-base;
         }
+
+        .img {
+            height:20px;
+            width: auto;
+            background: none;
+        }
     }
 
     .recipe-content {
