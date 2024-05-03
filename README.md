@@ -2,6 +2,9 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+refactoring from adding new meals in the day card to the mealslist and dropdown in day, firebase stuff
+fetching single recipie to many and choosing from there
+
 ## Available Scripts
 
 In the project directory, you can run:

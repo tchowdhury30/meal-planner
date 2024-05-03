@@ -1,139 +1,84 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import useMealStore from '../services/useMealstore';
 import { saveMeal } from '../services/mealServices'; 
-import { fetchTopIngredientsRecipes, fetchPantryItems } from '../services/pantryServices';
+import { fetchPantryItems } from '../services/pantryServices';
 
 
 const RecipeSearch = ({ closeSearch }) => {
-  const { pantryItems, fetchRecipesBasedOnPantry, isLoading, setRecipes } = useMealStore();
-  const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const { recipes, pantryItems, fetchRecipesBasedOnPantry, isLoading, fetchRecipeDetails, recipeDetails } = useMealStore();
 
   useEffect(() => {
-    if (pantryItems.length === 0) { 
+    if (pantryItems.length === 0) {
       fetchPantryItems((pantryItems) => {
-        fetchRecipesBasedOnPantry(pantryItems).then(data => {
-          const { recipe, recipeDetails } = data;
-          if (recipe && recipe.id > 0) {
-
-            setSelectedRecipe(recipe);
-            parseAndSetRecipeDetails(recipeDetails);
-          } else {
-            console.log("No direct matches, trying top ingredients...");
-            fetchTopIngredientsRecipes(pantryItems).then(fallbackRecipes => {
-              console.log("Fallback recipes fetched:", fallbackRecipes);
-              if (fallbackRecipes.length > 0) {
-                console.log("Fallback recipes found");
-                setSelectedRecipe(fallbackRecipes[0]);
-                setRecipes(fallbackRecipes); 
-              } else {
-                console.log("No recipes found with top ingredients.");
-                setSelectedRecipe(null);
-              }
-            }).catch(err => console.error("Error fetching recipes with top ingredients:", err));
-          }
-        }).catch(err => console.error("Error fetching recipes based on pantry:", err));
+        fetchRecipesBasedOnPantry(pantryItems);
       });
     } else {
-      console.log("Pantry items are present");
-      fetchRecipesBasedOnPantry().then(recipe => {
-        console.log("Recipes fetched based on pantry:", recipe);
-        if (recipe.id) {
-          console.log("Direct matches found");
-          setSelectedRecipe(recipe);
-        } else {
-          console.log("No direct matches, trying top ingredients...");
-          fetchTopIngredientsRecipes(pantryItems).then(fallbackRecipes => {
-            console.log("Fallback recipes fetched:", fallbackRecipes);
-            if (fallbackRecipes.length > 0) {
-              console.log("Fallback recipes found");
-              setSelectedRecipe(fallbackRecipes[0]);
-              setRecipes(fallbackRecipes); 
-            } else {
-              console.log("No recipes found with top ingredients.");
-              setSelectedRecipe(null);
-            }
-          }).catch(err => console.error("Error fetching recipes with top ingredients:", err));
-        }
-      }).catch(err => console.error("Error fetching recipes based on pantry:", err));
+      fetchRecipesBasedOnPantry(pantryItems);
+      
     }
-  }, [pantryItems, fetchRecipesBasedOnPantry, setRecipes]);  
+  }, [pantryItems]);
+
+  const handleRecipeClick = async (recipeId) => {
+    const recipe = recipes.find(r => r.id === recipeId); 
+    console.log('details:', recipe);
+    if (recipe) {
+        await fetchRecipeDetails(recipeId); 
   
-  const handleAddRecipeToDay = () => {
+        if (recipeDetails) {
+          const ingredients = [];
+          const steps = [];
     
-    if (selectedRecipe.id > 0) {
-      const { recipeDetails } = useMealStore.getState();
-  
-      console.log('w',selectedRecipe );
-      const newRecipe = {
-        title: selectedRecipe.title,
-        steps: recipeDetails.steps,
-        ingredients: recipeDetails.ingredients,
-        type: ''
-      };
+          recipeDetails.forEach((section) => {
+            section.steps.forEach((step) => {
+              steps.push(step.step);
+    
+              step.ingredients.forEach((ingredient) => {
+                ingredients.push({
+                  name: ingredient.name,
+                  image: ingredient.image,
+                  id: ingredient.id
+                });
+              });
+            });
+          });   
+          console.log("myingredients", ingredients);
+          console.log("mysteps", steps);
 
-      console.log('a2ttempting',newRecipe);
-  
-      recipeDetails.ingredients.forEach(ingredient => {
-        useMealStore.getState().addIngredient(ingredient.name);
-      });
-  
-      recipeDetails.steps.forEach(step => {
-        useMealStore.getState().addStep(step);
-      });
-      console.log('attempting',newRecipe);
-      saveMeal({
-        mealName: selectedRecipe.title,
-        recipe: newRecipe,
-        mealType: newRecipe.type, 
-        day: 'Any', 
-      }, () => {
-        console.log('Meal saved successfully');
-      });
-     
-      closeSearch();
-    }
-  };
-  
+          const newRecipe = {
+            title: recipe.title,
+            steps: steps,
+            ingredients: ingredients,
+            type: ''
+          };
 
-  const parseAndSetRecipeDetails = (recipeData) => {
-    const { setRecipeDetails } = useMealStore.getState();
-  
-    const ingredients = [];
-    const steps = [];
-  
-    recipeData.forEach((section) => {
-      section.steps.forEach((step) => {
-        steps.push(step.step);
-  
-        step.ingredients.forEach((ingredient) => {
-          ingredients.push({
-            name: ingredient.name,
-            image: ingredient.image,
-            id: ingredient.id
+          saveMeal({
+            mealName: recipe.title,
+            recipe: newRecipe,
+            mealType: newRecipe.type, 
+            day: 'Any', 
+          }, () => {
+            console.log('Meal saved successfully');
           });
-        });
-      });
-    });
+        } 
 
-    setRecipeDetails({ ingredients, steps });
-  };  
+    }
+    closeSearch();
+};
 
   return (
     <div>
-      <h1>Recipes Based on Your Pantry</h1>
-      {isLoading && <p>Loading recipes...</p>}
-      {/* {error && <p>Error fetching recipes: {error}</p>} */}
-      {selectedRecipe ? (
-        <div>
-          <p>{selectedRecipe.title}</p>
-          <button onClick={handleAddRecipeToDay}>Add This Meal to Day</button>
-        </div>
-      ) : (
-        <p>No recipes found. Try adding more items to your pantry.</p>
-      )}
+        <h1>Recipes Based on Your Pantry</h1>
+        {isLoading && <p>Loading recipes...</p>}
+        <ul>
+            {recipes.map((recipe) => (
+                <li key={recipe.id} onClick={() => handleRecipeClick(recipe.id)}>
+                    {recipe.title}
+                </li>
+            ))}
+        </ul>
     </div>
-  );
+);
 };
 
 RecipeSearch.propTypes = {
