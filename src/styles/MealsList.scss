@@ -1,0 +1,82 @@
+.meals-list {
+    font-family: 'Ubuntu Mono', monospace;
+  
+    h2 {
+      color: #2d1768;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .add-meal-button {
+        background: none;
+        border: none;
+        padding: 2px; 
+        cursor: pointer;
+
+        img {
+            height: 90px;  
+            width: auto;
+        }
+
+    }
+
+    .remove-meal-button {
+        background: none;
+        border: none;
+        padding: 2px;  
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        img {
+            height: 20px;  
+            width: auto;
+        }
+
+        &:hover {
+            background-color: #ffb3b3;
+        }
+    }
+  
+    // button {
+    //   background-color: #cbcbeb;
+    //   border: none;
+    //   border-radius: 5px;
+    //   padding: 8px 16px;
+    //   cursor: pointer;
+    //   transition: background-color 0.3s, transform 0.3s;
+  
+    //   &:hover {
+    //     background-color: #b0aeeb;
+    //     transform: translateY(-2px);
+    //   }
+  
+    //   &.cancel {
+    //     background-color: #f2f2f2;
+    //     border: 1px solid #ccc;
+    //     color: #333;
+    //   }
+    // }
+  
+    .meal {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin-top: 10px;
+      background-color: #f9f9f9;
+  
+      &.editing {
+        background-color: #e8e8e8;
+      }
+  
+      span {
+        color: #333;
+        font-weight: bold;
+        margin-right: 10px;
+      }
+  
+      
+
+      
+    }
+  }
+  
