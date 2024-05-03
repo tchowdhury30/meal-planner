@@ -14,7 +14,7 @@ const Pantry = () => {
     if (newItem.name && newItem.quantity) {
       addPantryItem(newItem, () => {
         fetchPantryItems(setPantryItems);
-        setNewItem({ name: '', quantity: '' }); // Reset new item input fields
+        setNewItem({ name: '', quantity: '' });  
       });
     }
   };

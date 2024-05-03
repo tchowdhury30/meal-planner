@@ -1,6 +1,6 @@
 //const API_KEY = 'dd96b00c6aa94d3dbb2fc50f9b41b009';
-const API_KEY = 'bddb74b7f9204c21b4c2c73673a2a058';
-//const API_KEY = '2a957a08d62f426a9df61e1d53227ce5';
+//const API_KEY = 'bddb74b7f9204c21b4c2c73673a2a058';
+const API_KEY = '2a957a08d62f426a9df61e1d53227ce5';
 //const API_KEY = 'fake';
 
 export const fetchRecipesByIngredients = async (ingredients) => {
@@ -10,7 +10,7 @@ export const fetchRecipesByIngredients = async (ingredients) => {
       if (!response.ok) throw new Error('Failed to fetch recipes');
       const recipes = await response.json();
       console.log('Recipes fetched successfully:', recipes);
-      return recipes[0];
+      return recipes;
     } catch (error) {
       console.error('Error fetching recipes by ingredients:', error);
       throw error; 

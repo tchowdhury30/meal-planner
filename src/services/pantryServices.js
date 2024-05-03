@@ -10,7 +10,9 @@ export const fetchPantryItems = (callback) => {
         ...value
       })) : [];
       callback(pantryItems);
+      
     });
+    
   };
 
   export const fetchTopIngredientsRecipes = async (pantryItems, fetchRecipesByIngredients) => {

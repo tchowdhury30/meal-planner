@@ -14,7 +14,7 @@ const useMealStore = create((set, get) => ({
   recipes: [],
   isLoading: false,
   error: null,
-  
+  selectedRecipe: null,  // Adding a state for the selected recipe
 
   // Meal and Pantry Functions
   setMealName: name => set({ mealName: name }),
@@ -34,44 +34,58 @@ const useMealStore = create((set, get) => ({
     }
   })),
   resetMealCreation: () => set({ mealName: '', mealType: '', recipeDetails: { ingredients: [], steps: [] } }),
-  
-  // Fetch data
+
+  // Fetch data functions
   fetchMealList: () => mealServices.fetchMeals(meals => set({ mealList: meals || [] })),
   fetchPantryItems: async () => {
     set({ isLoading: true });
     try {
       const items = await pantryServices.fetchPantryItems();
       set({ pantryItems: items, isLoading: false });
+      console.log("everything", items)
     } catch (error) {
       set({ error: error.message, isLoading: false });
     }
+    
   },
-// Recipe fetching
-fetchRecipesBasedOnPantry: async (pantryItems) => {
-  set({ isLoading: true });
-  try {
+  fetchRecipesBasedOnPantry: async (pantryItems) => {
+    set({ isLoading: true });
+    try {
       const ingredients = pantryItems.map(item => item.name.trim()).filter(name => name).join(",");
-      if (ingredients) {
-          const recipes = await spoonacularAPI.fetchRecipesByIngredients(ingredients);
-          if (recipes.id != 0 ) {
-              const recipeDetails = await spoonacularAPI.fetchRecipeInstructions(recipes.id);
-              set({ recipes: [recipeDetails], isLoading: false });
-              return { recipe: recipes, recipeDetails: recipeDetails };
-          } else {
-              console.error("No recipes found with given ingredients.");
-              set({ recipes: [], isLoading: false });
-          }
-          
-      } else {
-          console.error("No valid ingredients to fetch recipes for.");
-          set({ recipes: [], isLoading: false });
-      }
       
-  } catch (error) {
+      if (ingredients) {
+        const recipes = await spoonacularAPI.fetchRecipesByIngredients(ingredients);
+        set({ recipes: recipes, isLoading: false });
+      } else {
+        console.error("No valid ingredients to fetch recipes for.");
+        set({ recipes: [], isLoading: false });
+      }
+    } catch (error) {
       console.error("Error fetching recipes:", error);
       set({ error: error.message, isLoading: false });
-  }
-},
+    }
+  },
+  fetchRecipeDetails: async (recipeId) => {
+    set({ isLoading: true });
+    try {
+      const recipeDetails = await spoonacularAPI.fetchRecipeInstructions(recipeId);
+      set({ recipeDetails: recipeDetails, isLoading: false });
+    } catch (error) {
+      console.error("Error fetching recipe instructions:", error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+  selectRecipe: (recipe) => {
+    set((state) => ({
+      selectedRecipe: {
+        ...state.selectedRecipe,
+        ...recipe,
+        ingredients: recipe.ingredients || [],
+        steps: recipe.steps || []
+      }
+    }));
+  },  
+
   // Meal Editing
   initiateMealEdit: meal => {
     const mealToEdit = get().mealList.find(m => m.id === meal.id);
@@ -92,10 +106,9 @@ fetchRecipesBasedOnPantry: async (pantryItems) => {
       get().fetchMealList();
       set({ editingMealId: null });
     } catch (error) {
-      console.error(`Error updating meal: ${mealId} under dayId: ${meal.dayId}`, error);
+      console.error(`Error updating meal: ${mealId} under dayId: 'Any`, error);
     }
   },
 }));
 
 export default useMealStore;
-

@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+refactoring from adding new meals in the day card to the mealslist and dropdown in day, firebase stuff
+fetching single recipie to many and choosing from there
+sooo many issues with suggestions and api calls and asynchronization stuff, pls refresh screen often if the recipie fetching doesnt work, tried using debouncing to fix but didnt work
+also deleting a meal from recipies tab deletes the recipie if its in the weekly planner
 ## Available Scripts
 
 In the project directory, you can run:
