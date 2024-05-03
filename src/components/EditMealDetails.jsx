@@ -17,7 +17,6 @@ const EditMealDetails = () => {
                 const ingredientString = mealData.recipe.ingredients.map(ing => ing.name).join('; ');
                 setIngredientInput(ingredientString);
             }
-            console.log(mealData.recipe.ingredients);
         });
     }, [mealName]);
 
