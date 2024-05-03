@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchMealByName } from '../services/mealServices';
+import '../styles/MealDetails.scss'; 
 
 const MealDetails = () => {
     const { mealName } = useParams();
@@ -30,27 +31,35 @@ const MealDetails = () => {
 
     
     return (
-        <div>
+        <div className="meal-details-container">
             {meal ? (
                 <div>
-                    <h1>{meal.mealName}</h1>
-                    <h2>Type: {meal.mealType}</h2>
+                    <div className="meal-header">
+                        <h1 className="meal-title">{meal.mealName}</h1>
+                        <h2 className="meal-type">Type: {meal.mealType}</h2>
+                    </div>
                     <div>
                         <h3>Recipe</h3>
                         {meal.recipe ? (
                             <div>
-                                <h4>Ingredients</h4>
-                                <ul>
-                                    {meal.recipe.ingredients.map((ingredient, index) => (
-                                        <li key={index}>{ingredient.name} - {ingredient.amount} {ingredient.unit}</li>
-                                    ))}
-                                </ul>
-                                <h4>Steps</h4>
-                                <ol>
-                                    {meal.recipe.steps.map((step, index) => (
-                                        <li key={index}>{step}</li>
-                                    ))}
-                                </ol>
+                                <div className="ingredients">
+                                    <h4>Ingredients</h4>
+                                    <ul className="ingredient-list">
+                                        {meal.recipe.ingredients.map((ingredient, index) => (
+                                            <li className="ingredient-item" key={index}>
+                                                {ingredient.name} - {ingredient.amount} {ingredient.unit}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div className="steps">
+                                    <h4>Steps</h4>
+                                    <ol className="step-list">
+                                        {meal.recipe.steps.map((step, index) => (
+                                            <li className="step-item" key={index}>{step}</li>
+                                        ))}
+                                    </ol>
+                                </div>
                             </div>
                         ) : <p>No recipe details available.</p>}
                     </div>
