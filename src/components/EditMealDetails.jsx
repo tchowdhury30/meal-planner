@@ -7,22 +7,31 @@ const EditMealDetails = () => {
     const { mealName } = useParams();
     const navigate = useNavigate();
     const [meal, setMeal] = useState({});
-    
+    const [ingredientInput, setIngredientInput] = useState('');
+
 
     useEffect(() => {
         fetchMealByName(decodeURIComponent(mealName), (mealData) => {
             setMeal(mealData);
-            // if (mealData.recipe && mealData.recipe.ingredients) {
-            //     const ingredientString = mealData.recipe.ingredients.map(ing => ing.name).join('; ');
-            //     setIngredientInput(ingredientString);
-            // }
+            if (mealData.recipe && mealData.recipe.ingredients) {
+                const ingredientString = mealData.recipe.ingredients.map(ing => ing.name).join('; ');
+                setIngredientInput(ingredientString);
+            }
             console.log(mealData.recipe.ingredients);
         });
     }, [mealName]);
 
     const handleSave = (e) => {
         e.preventDefault();
-        updateMeal('Any', meal.id, meal, () => {  
+        const ingredientsArray = ingredientInput.split(';').map(name => ({ name: name.trim() }));
+        const updatedMeal = {
+            ...meal,
+            recipe: {
+                ...meal.recipe,
+                ingredients: ingredientsArray
+            }
+        };
+        updateMeal('Any', meal.id, updatedMeal, () => {
             navigate(`/meal-details/${mealName}`);
         });
     };
@@ -40,7 +49,12 @@ const EditMealDetails = () => {
                 <option value="dinner">Dinner</option>
                 <option value="snack">Snack</option>
             </select>
-            
+            <input 
+                type="text"
+                value={ingredientInput}
+                onChange={(e) => setIngredientInput(e.target.value)}
+                placeholder="Enter ingredients separated by semicolons"
+            />
             <textarea
                 value={meal.recipe ? meal.recipe.steps.join('\n') : ''}
                 onChange={(e) => setMeal({
