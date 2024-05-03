@@ -66,7 +66,7 @@ const DayCard = ({ day, gotMeals, setGotMeals }) => {
             {showMealSelector && (
                 <div className="meal-selector">
                     <select value={selectedMealId} onChange={(e) => setSelectedMealId(e.target.value)}>
-                        <option value="">Select a Meal</option>
+                        <option value="">meal?</option>
                         {allMeals.map((meal) => (
                             <option key={meal.id} value={meal.id}>{meal.mealName}</option>
                         ))}
