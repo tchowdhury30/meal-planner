@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { fetchMealsForDay, removeMealByName, fetchMeals, fetchMealById, saveMeal } from '../services/mealServices';
 import { useNavigate } from 'react-router-dom';
-
+import '../styles/DayCard.scss';
 const DayCard = ({ day, gotMeals, setGotMeals }) => {
     const [meals, setMeals] = useState([]);
     const [allMeals, setAllMeals] = useState([]);
@@ -17,7 +17,6 @@ const DayCard = ({ day, gotMeals, setGotMeals }) => {
 
     const handleAddMeal = () => {
         if (selectedMealId) {
-            console.log("what the hell", selectedMealId);
             fetchMealById(selectedMealId, (mealData) => {
                 if (mealData) {
                     const recipeProvided = mealData.recipe || "";

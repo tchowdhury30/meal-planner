@@ -1,6 +1,6 @@
 import React from 'react';
 import DayCard from './DayCard';
-
+import '../styles/DayCard.scss';
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 // eslint-disable-next-line react/prop-types
