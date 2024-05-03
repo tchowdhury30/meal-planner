@@ -1,9 +1,10 @@
 .navbar {
     display: flex;
     justify-content: space-between; 
-    background: #fff; 
+    background: #cbcbeb; 
     padding: 10px 0; 
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+    border-radius: 20px;   
   
     .nav-link {
       flex: 1;
@@ -11,9 +12,9 @@
       justify-content: center; 
       align-items: center; 
       text-decoration: none; 
-      background-color: #f9f9f9; 
+      background-color: #cbcbeb; 
       margin: 0 10px; 
-      padding: 10px 0; 
+      padding: 3px 0; 
       border-radius: 15px; 
       transition: background-color 0.3s, transform 0.3s; 
   
@@ -34,4 +35,12 @@
       }
     }
   }
+  
+  .App {
+    background-color: #E6E6FA; // Lavender color
+    min-height: 100vh; // Ensures the background covers the full viewport height
+    padding: 20px; // Provides some space around your content
+    box-sizing: border-box; // Ensures padding is included in width and height
+  }
+  
   
