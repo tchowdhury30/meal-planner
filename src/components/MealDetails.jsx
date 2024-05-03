@@ -11,6 +11,10 @@ const MealDetails = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    const handleEdit = () => {
+        navigate(`/meal-details/${mealName}/edit`);
+    };
+    
     useEffect(() => {<button onClick={handleEdit}>Edit</button>
         const decodedMealName = decodeURIComponent(mealName);
         fetchMealByName(decodedMealName, (mealData, err) => {
@@ -30,10 +34,6 @@ const MealDetails = () => {
     if (error) {
         return <p>{error}</p>;
     }
-
-    const handleEdit = () => {
-        navigate(`/meal-details/${mealName}/edit`);
-    };
  
     return (
         <div className="meal-details-container">
@@ -42,7 +42,9 @@ const MealDetails = () => {
                     <div className="meal-header">
                         <h1 className="meal-title">{meal.mealName}</h1>
                         <h2 className="meal-type">{meal.mealType || ''}</h2>
-                        <button onClick={handleEdit}><img src={editIcon} alt="Edit Meal" /></button>
+                        <button onClick={handleEdit} className="edit-button">
+                            <img src={editIcon} alt="Edit Meal" />
+                        </button>
                     </div>
                     <div className="recipe-content">
                         {meal.recipe && meal.recipe.ingredients && (

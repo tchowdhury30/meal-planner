@@ -8,8 +8,6 @@ import EditMealDetails from './components/EditMealDetails';
 import mealPlannerIcon from './img/plan-nav.png';
 import pantryIcon from './img/pantry-nav.png';
 import mealsListIcon from './img/meal-nav.png';
-
-
 import './styles/App.scss';
 
 function App() {
