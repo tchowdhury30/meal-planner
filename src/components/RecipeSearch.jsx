@@ -6,7 +6,7 @@ import { fetchPantryItems } from '../services/pantryServices';
 
 
 const RecipeSearch = ({ closeSearch }) => {
-  const { recipes, pantryItems, fetchRecipesBasedOnPantry, isLoading, fetchRecipeDetails, recipeDetails } = useMealStore();
+  const { recipes, pantryItems, fetchRecipesBasedOnPantry, isLoading, fetchRecipeDetails } = useMealStore();
 
   useEffect(() => {
     if (pantryItems.length === 0) {
@@ -24,12 +24,13 @@ const RecipeSearch = ({ closeSearch }) => {
     console.log('details:', recipe);
     if (recipe) {
         await fetchRecipeDetails(recipeId); 
-  
-        if (recipeDetails) {
+        const updatedDetails = useMealStore.getState().recipeDetails;
+
+        if (updatedDetails) {
           const ingredients = [];
           const steps = [];
     
-          recipeDetails.forEach((section) => {
+          updatedDetails.forEach((section) => {
             section.steps.forEach((step) => {
               steps.push(step.step);
     
