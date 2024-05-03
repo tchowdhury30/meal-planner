@@ -69,7 +69,7 @@ const RecipeSearch = ({ closeSearch }) => {
         title: selectedRecipe.title,
         steps: recipeDetails.steps,
         ingredients: recipeDetails.ingredients,
-        type: "edit type"
+        type: ''
       };
 
       console.log('a2ttempting',newRecipe);

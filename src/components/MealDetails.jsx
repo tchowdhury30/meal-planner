@@ -34,7 +34,7 @@ const MealDetails = () => {
                 <div>
                     <div className="meal-header">
                         <h1 className="meal-title">{meal.mealName}</h1>
-                        <h2 className="meal-type">Type: {meal.mealType || 'No type specified'}</h2>
+                        <h2 className="meal-type">{meal.mealType || ''}</h2>
                     </div>
                     <div className="recipe-content">
                         {meal.recipe && meal.recipe.ingredients && (
