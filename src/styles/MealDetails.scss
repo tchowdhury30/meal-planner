@@ -4,8 +4,8 @@ $spacing-base: 20px;
 $background-card: #fff;
 
 .meal-details-container {
-    max-width: 768px; 
-    margin: 40px auto;  
+    max-width: 768px;
+    margin: 40px auto;
     padding: $spacing-base;
     background-color: $background-card;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -29,22 +29,49 @@ $background-card: #fff;
 
     .recipe-content {
         display: flex;
+        flex-direction: row;
         justify-content: space-between;
+        margin-top: $spacing-base;
 
-        .ingredients, .steps {
-            flex: 1;  
+        .ingredients {
+            flex: 1; 
             background-color: $background-light;
             padding: 15px;
             border-radius: 8px;
-            margin: 0 10px;  
+            margin-right: 10px; 
 
             h4 {
                 margin-top: 0;
                 margin-bottom: 10px;
             }
 
-            ul, ol {
-                margin-left: 20px;  
+            ul {
+                padding-left: 20px;
+                list-style: none; 
+
+                li {
+                    margin-bottom: 5px;
+                }
+            }
+        }
+
+        .steps {
+            flex: 2; 
+            background-color: $background-light;
+            padding: 15px;
+            border-radius: 8px;
+
+            h4 {
+                margin-top: 0;
+                margin-bottom: 10px;
+            }
+
+            ol {
+                padding-left: 20px;
+
+                li {
+                    margin-bottom: 5px;
+                }
             }
         }
     }
