@@ -76,7 +76,7 @@ const RecipeSearch = ({ closeSearch }) => {
 };
 
   return (
-    <div>
+    <div className="suggestions-form">
         <h1>Recipes Based on Your Pantry</h1>
         {isLoading && <p>Loading recipes...</p>}
         <ul>

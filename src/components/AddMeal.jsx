@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import useMealStore from '../services/useMealstore';
 import Recipe from './Recipe';
 import { saveMeal } from '../services/mealServices'; 
+import '../styles/MealsList.scss';
 
 const AddMeal = ({ day, closeForm, gotMeals, setGotMeals }) => {
   const {
@@ -26,7 +27,7 @@ const AddMeal = ({ day, closeForm, gotMeals, setGotMeals }) => {
   };
 
   return (
-    <div>
+    <div className='add-meal-form'>
       <form onSubmit={handleSubmit}>
         <input type="text" value={mealName} onChange={e => setMealName(e.target.value)} placeholder="Meal Name" required />
         <select value={mealType} onChange={e => setMealType(e.target.value)} required>

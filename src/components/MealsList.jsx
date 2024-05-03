@@ -6,6 +6,7 @@ import RecipeSearch from './RecipeSearch';
 import addMealIcon from '../img/add-meal.png'; 
 import deleteMealIcon from '../img/delete-meal.png';
 import showSuggestions from '../img/suggestion.png'
+import cancelIcon from '../img/cancel.png';
 import { useNavigate } from 'react-router-dom'; 
 import '../styles/MealsList.scss';
 
@@ -49,9 +50,9 @@ const MealsList = ({ gotMeals, setGotMeals }) => {
       </div>
       <div className="button-container">
       <button onClick={toggleAddMealForm} className="add-meal-button">
-        {showAddMealForm ? 'Cancel Add Meal' : <img src={addMealIcon} alt="Add Meal" />}
+        {showAddMealForm ? <img src={cancelIcon} alt="Cancel Add Meal" /> : <img src={addMealIcon} alt="Add Meal" />}
       </button>
-      <button onClick={toggleRecipeSearch} className="suggestions-button"> {showRecipeSearch ? 'Hide Suggestions' : <img src={showSuggestions} alt="Suggestions" />}</button>
+      <button onClick={toggleRecipeSearch} className="suggestions-button"> {showRecipeSearch ? <img src={cancelIcon} alt="Hide Suggestions" /> : <img src={showSuggestions} alt="Suggestions" />}</button>
       {showAddMealForm && <AddMealForm closeForm={() => setShowAddMealForm(false)} gotMeals={gotMeals} setGotMeals={setGotMeals} />}
       {showRecipeSearch && <RecipeSearch closeSearch={() => setShowRecipeSearch(false)} pantryItems={pantryItems} />}
       </div>
