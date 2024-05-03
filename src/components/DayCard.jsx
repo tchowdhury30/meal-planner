@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { fetchMealsForDay, removeMealByName, fetchMeals, fetchMealById, saveMeal } from '../services/mealServices';
+import { useNavigate } from 'react-router-dom';
+import addMealIcon from '../img/add-meal.png'; 
+import deleteMealIcon from '../img/delete-meal.png'; 
+import '../styles/DayCard.scss';
 
 const DayCard = ({ day, gotMeals, setGotMeals }) => {
     const [meals, setMeals] = useState([]);
     const [allMeals, setAllMeals] = useState([]);
     const [selectedMealId, setSelectedMealId] = useState('');
     const [showMealSelector, setShowMealSelector] = useState(false);
+    const navigate = useNavigate();  
 
     useEffect(() => {
         fetchMealsForDay(day, setMeals);   
@@ -15,19 +20,16 @@ const DayCard = ({ day, gotMeals, setGotMeals }) => {
 
     const handleAddMeal = () => {
         if (selectedMealId) {
-            console.log("what the hell", selectedMealId);
             fetchMealById(selectedMealId, (mealData) => {
                 if (mealData) {
-                    const recipeProvided = mealData.recipe || "";
                     saveMeal({
                         mealName: mealData.mealName,
-                        recipe: recipeProvided,  
+                        recipe: mealData.recipe || "",
                         mealType: mealData.mealType,
                         day: day
                     }, () => {
                         console.log(`Meal added to ${day}`);
                         fetchMealsForDay(day, setMeals);  
-                        //setSelectedMealId('');            
                         setGotMeals(gotMeals + 1);        
                     });
                 } else {
@@ -46,29 +48,40 @@ const DayCard = ({ day, gotMeals, setGotMeals }) => {
     };
 
     const toggleMealSelector = () => {
-        setShowMealSelector(!showMealSelector);
+        setShowMealSelector(prev => !prev);
+    };
+
+    const viewMealDetails = (mealName) => {
+        navigate(`/meal-details/${encodeURIComponent(mealName)}`);
     };
 
     return (
-        <div style={{ margin: '10px', padding: '20px', border: '1px solid gray', cursor: 'pointer' }}>
-            <h4>{day}</h4>
-            <button onClick={toggleMealSelector}>{showMealSelector ? 'Cancel' : 'Add Meal'}</button>
+        <div className="day-card">
+            <div className="day-header">
+                <h4>{day}</h4>
+                <button onClick={toggleMealSelector} className="add-meal-button">
+                    {showMealSelector ? 'Cancel' : <img src={addMealIcon} alt="Add Meal" />}
+                </button>
+            </div>
             {showMealSelector && (
-                <div>
+                <div className="meal-selector">
                     <select value={selectedMealId} onChange={(e) => setSelectedMealId(e.target.value)}>
-                        <option value="">Select a Meal</option>
+                        <option value="">meal?</option>
                         {allMeals.map((meal) => (
                             <option key={meal.id} value={meal.id}>{meal.mealName}</option>
                         ))}
                     </select>
-                    <button onClick={handleAddMeal}>Add Meal to Day</button>
+                    <button onClick={handleAddMeal}>Add</button>
                 </div>
             )}
             <ul>
-                {meals.map((meal) => (
-                    <li key={meal}>
-                        {meal}
-                        <button onClick={() => handleRemoveMeal(meal)}>Remove</button> 
+                {meals.map((mealName) => (
+                    <li key={mealName} onClick={() => viewMealDetails(mealName)} className="meal-item">
+                        {mealName}
+                        <button onClick={(e) => {
+                            e.stopPropagation();
+                            handleRemoveMeal(mealName);
+                        }} className="remove-meal-button"><img src={deleteMealIcon} alt="Delete Meal" /> </button>
                     </li>
                 ))}
             </ul>

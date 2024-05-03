@@ -61,18 +61,17 @@ export const fetchMealsForDay = (day, callback) => {
   
 
   export const fetchMeals = (callback) => {
-    const mealsRef = ref(db, 'meals/');
+    const mealsRef = ref(db, 'meals/Any');
     onValue(mealsRef, (snapshot) => {
       const data = snapshot.val();
-      const meals = data ? Object.entries(data).flatMap(([dayKey, dayMeals]) => {
-        return Object.entries(dayMeals).map(([mealKey, mealValue]) => {
-          return { id: mealKey, dayId: dayKey, ...mealValue };
-        });
+      const meals = data ? Object.entries(data).map(([mealKey, mealValue]) => {
+        return { id: mealKey, ...mealValue };
       }) : [];
-    //   console.log('Meals fetched:', meals);
+      console.log('Meals fetched:', meals);
       callback(meals);
     });
-  };
+};
+
   
   export const fetchMealsFromAny = (callback) => {
     const mealsRef = ref(db, 'meals/Any');
@@ -138,6 +137,31 @@ export const removeMealByName = (day, mealName, callback) => {
       } else {
           console.log("No meals found on the day:", day);
           callback(false); 
+      }
+  }, {
+      onlyOnce: true
+  });
+};
+
+export const fetchMealByName = (mealName, callback) => {
+  const mealsRef = ref(db, 'meals/Any'); // Adjust the path as necessary for your database structure
+  onValue(mealsRef, (snapshot) => {
+      const mealsData = snapshot.val();
+      let found = false;
+      if (mealsData) {
+          Object.entries(mealsData).forEach(([key, value]) => {
+              if (value.mealName.toLowerCase() === mealName.toLowerCase()) {
+                  callback({ id: key, ...value }, null);
+                  found = true;
+              }
+          });
+          if (!found) {
+              console.error("No meal found with the name:", mealName);
+              callback(null, "No meal found with the name: " + mealName);
+          }
+      } else {
+          console.error("No meals found");
+          callback(null, "No meals found");
       }
   }, {
       onlyOnce: true
