@@ -1,10 +1,10 @@
 $font-color: #333;
-$background-light: #f9f9f9;  
+$background-light: #f9f9f9;
 $spacing-base: 20px;
-$background-card: #cbcbeb;  
-$title-bg: #cbcbeb;  
-$steps-bg: rgb(248, 247, 240);  
-$font-family: 'Arial', sans-serif;
+$background-card: #cbcbeb;
+$title-bg: #cbcbeb;
+$steps-bg: rgb(248, 247, 240);
+$font-family: 'Ubuntu Mono', monospace;
 
 .meal-details-container {
     max-width: 768px;
@@ -16,20 +16,20 @@ $font-family: 'Arial', sans-serif;
     font-family: $font-family;
 
     .meal-header {
-        background-color: $title-bg;  
+        background-color: $title-bg;
         text-align: center;
         padding: 15px;
         border-radius: 8px;
-        color: #190b2c; // White text for better visibility on purple
+        color: #190b2c;
         margin-bottom: $spacing-base;
 
         .meal-title {
-            font-size: 28px;
-            margin-bottom: 5px;
+            font-size: 32px;
+            margin-bottom: 10px;
         }
 
         .meal-type {
-            font-size: 18px;
+            font-size: 20px;
             margin-bottom: $spacing-base;
         }
     }
@@ -42,15 +42,17 @@ $font-family: 'Arial', sans-serif;
 
         .ingredients {
             flex: 1;
-            background-color: $title-bg;  
+            background-color: $title-bg;
             padding: 15px;
             border-radius: 8px;
-            margin-right: 10px;  
-            color: #190b2c;  
+            margin-right: 10px;
+            color: #190b2c;
+            text-align: center;
 
             h4 {
+                font-size: 30px;
                 margin-top: 0;
-                margin-bottom: 10px;
+                margin-bottom: 15px;
             }
 
             ul {
@@ -58,30 +60,32 @@ $font-family: 'Arial', sans-serif;
                 padding-left: 0;
 
                 .ingredient-item {
-                    font-size: 16px;
+                    font-size: 20px;
                     margin-bottom: 5px;
                 }
             }
         }
 
         .steps {
-            flex: 2;  
-            background-color: $steps-bg;  
-            padding: 15px;
-            border-radius: 8px;
-            margin-left: 10px;  
+            flex: 2;
+            background-color: $steps-bg;
+            padding: 40px;
+            border-radius: 5px;  
+            margin-left: 10px;
+            margin-bottom: $spacing-base; 
 
             h4 {
+                font-size: 30px;
                 margin-top: 0;
-                margin-bottom: 10px;
-                color: #333;  
+                margin-bottom: 0px;
+                color: #333;
             }
 
             ol {
                 padding-left: 20px;
 
                 .step-item {
-                    font-size: 16px;
+                    font-size: 18px;  
                     margin-bottom: 5px;
                 }
             }

@@ -1,4 +1,11 @@
+.ubuntu-mono {
+  font-family: 'Ubuntu Mono', monospace;
+  font-weight: 400; 
+  font-style: normal;  
+}
+
 .navbar {
+    font-family: 'Ubuntu Mono', monospace;
     display: flex;
     justify-content: space-between; 
     background: #cbcbeb; 
@@ -41,6 +48,7 @@
     min-height: 100vh;  
     padding: 20px;  
     box-sizing: border-box;  
+    font-family: 'Ubuntu Mono', monospace;
   }
   
   
