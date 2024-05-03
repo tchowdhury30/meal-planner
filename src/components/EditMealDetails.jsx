@@ -7,27 +7,40 @@ const EditMealDetails = () => {
     const { mealName } = useParams();
     const navigate = useNavigate();
     const [meal, setMeal] = useState({});
+    
 
     useEffect(() => {
         fetchMealByName(decodeURIComponent(mealName), (mealData) => {
             setMeal(mealData);
+            // if (mealData.recipe && mealData.recipe.ingredients) {
+            //     const ingredientString = mealData.recipe.ingredients.map(ing => ing.name).join('; ');
+            //     setIngredientInput(ingredientString);
+            // }
+            console.log(mealData.recipe.ingredients);
         });
     }, [mealName]);
 
     const handleSave = (e) => {
         e.preventDefault();
-        updateMeal('Any', meal.id, meal, () => {  // Assuming you're updating in 'Any' day section
+        updateMeal('Any', meal.id, meal, () => {  
             navigate(`/meal-details/${mealName}`);
         });
     };
 
     return (
         <form onSubmit={handleSave}>
-            <input
-                type="text"
-                value={meal.mealName || ''}
-                onChange={(e) => setMeal({ ...meal, mealName: e.target.value })}
-            />
+            <h1>{meal.mealName || 'No Meal Name'}</h1>
+            <select 
+                value={meal.mealType || ''} 
+                onChange={(e) => setMeal({ ...meal, mealType: e.target.value })}
+            >
+                <option value="">Select Meal Type</option>
+                <option value="breakfast">Breakfast</option>
+                <option value="lunch">Lunch</option>
+                <option value="dinner">Dinner</option>
+                <option value="snack">Snack</option>
+            </select>
+            
             <textarea
                 value={meal.recipe ? meal.recipe.steps.join('\n') : ''}
                 onChange={(e) => setMeal({
@@ -35,6 +48,7 @@ const EditMealDetails = () => {
                     recipe: { ...meal.recipe, steps: e.target.value.split('\n') }
                 })}
             />
+            
             <button type="submit">Save</button>
         </form>
     );
