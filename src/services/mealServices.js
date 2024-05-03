@@ -67,7 +67,7 @@ export const fetchMealsForDay = (day, callback) => {
       const meals = data ? Object.entries(data).map(([mealKey, mealValue]) => {
         return { id: mealKey, ...mealValue };
       }) : [];
-      console.log('Meals fetched:', meals);
+      // console.log('Meals fetched:', meals);
       callback(meals);
     });
 };

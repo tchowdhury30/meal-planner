@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import useMealStore from '../services/useMealstore';
-import { removeMeal, fetchMealsFromAny } from '../services/mealServices';  // Import fetchMealsFromAny
+import { removeMeal, fetchMealsFromAny } from '../services/mealServices';   
 import AddMealForm from './AddMeal';
 import RecipeSearch from './RecipeSearch'; 
+import addMealIcon from '../img/add-meal.png'; 
+import deleteMealIcon from '../img/delete-meal.png'; 
+import '../styles/MealsList.scss';
 
 // eslint-disable-next-line react/prop-types
 const MealsList = ({ gotMeals, setGotMeals }) => {
@@ -33,10 +36,10 @@ const MealsList = ({ gotMeals, setGotMeals }) => {
   };
 
   return (
-    <div>
+    <div className="meals-list">
       <h2>Meals List</h2>
-      <button onClick={toggleAddMealForm}>
-        {showAddMealForm ? 'Cancel Add Meal' : 'Add Meal'}
+      <button onClick={toggleAddMealForm} className="add-meal-button">
+        {showAddMealForm ? 'Cancel Add Meal' : <img src={addMealIcon} alt="Add Meal" />}
       </button>
       <button onClick={toggleRecipeSearch}>{showRecipeSearch ? 'Hide Suggestions' : 'Show Suggestions'}</button>
       {showAddMealForm && <AddMealForm closeForm={() => setShowAddMealForm(false)} gotMeals={gotMeals} setGotMeals={setGotMeals} />}
@@ -65,7 +68,7 @@ const MealsList = ({ gotMeals, setGotMeals }) => {
             <div>
               <span>{meal.mealName}</span>
               <span>{meal.description}</span>
-              <button type="button" onClick={() => handleRemoveMeal('Any', meal.id)}>Remove</button> 
+              <button className="remove-meal-button" type="button" onClick={() => handleRemoveMeal('Any', meal.id)} ><img src={deleteMealIcon} alt="Delete Meal" /></button> 
             </div>
           )}
         </div>

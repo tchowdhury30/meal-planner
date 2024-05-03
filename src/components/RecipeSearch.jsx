@@ -6,7 +6,7 @@ import { fetchTopIngredientsRecipes, fetchPantryItems } from '../services/pantry
 
 
 const RecipeSearch = ({ closeSearch }) => {
-  const { pantryItems, fetchRecipesBasedOnPantry, isLoading, error, setRecipes } = useMealStore();
+  const { pantryItems, fetchRecipesBasedOnPantry, isLoading, setRecipes } = useMealStore();
   const [selectedRecipe, setSelectedRecipe] = useState(null);
 
   useEffect(() => {
@@ -123,7 +123,7 @@ const RecipeSearch = ({ closeSearch }) => {
     <div>
       <h1>Recipes Based on Your Pantry</h1>
       {isLoading && <p>Loading recipes...</p>}
-      {error && <p>Error fetching recipes: {error}</p>}
+      {/* {error && <p>Error fetching recipes: {error}</p>} */}
       {selectedRecipe ? (
         <div>
           <p>{selectedRecipe.title}</p>
