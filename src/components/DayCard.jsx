@@ -4,6 +4,7 @@ import { fetchMealsForDay, removeMealByName, fetchMeals, fetchMealById, saveMeal
 import { useNavigate } from 'react-router-dom';
 import addMealIcon from '../img/add-meal.png'; 
 import deleteMealIcon from '../img/delete-meal.png'; 
+import cancelIcon from '../img/cancel.png';
 import '../styles/DayCard.scss';
 
 const DayCard = ({ day, gotMeals, setGotMeals }) => {
@@ -60,7 +61,7 @@ const DayCard = ({ day, gotMeals, setGotMeals }) => {
             <div className="day-header">
                 <h4>{day}</h4>
                 <button onClick={toggleMealSelector} className="add-meal-button">
-                    {showMealSelector ? 'Cancel' : <img src={addMealIcon} alt="Add Meal" />}
+                    {showMealSelector ? <img src={cancelIcon} alt="Cancel Meal" /> : <img src={addMealIcon} alt="Add Meal" />}
                 </button>
             </div>
             {showMealSelector && (

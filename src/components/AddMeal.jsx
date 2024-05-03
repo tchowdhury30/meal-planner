@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import useMealStore from '../services/useMealstore';
 import Recipe from './Recipe';
 import { saveMeal } from '../services/mealServices'; 
+import addMealIcon from '../img/add-meal.png';
 import '../styles/MealsList.scss';
 
 const AddMeal = ({ day, closeForm, gotMeals, setGotMeals }) => {
@@ -38,8 +39,7 @@ const AddMeal = ({ day, closeForm, gotMeals, setGotMeals }) => {
           <option value="snack">Snack</option>
         </select>
         <Recipe />
-        <button type="submit">Add Meal</button>
-        <button type="button" onClick={closeForm}>Cancel</button>
+        <button type="submit" className='add-meal-icon'> <img src={addMealIcon} alt="Add Meal" /> </button>
       </form>
     </div>
   );
