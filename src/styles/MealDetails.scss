@@ -1,7 +1,10 @@
 $font-color: #333;
 $background-light: #f9f9f9;
 $spacing-base: 20px;
-$background-card: #fff;
+$background-card: #fbf3e8;
+$header-bg: #b7b7e3; // A soft gray background for headers
+$font-family: 'Arial', sans-serif; // You can choose any font you like
+$primary-color: #0c0445;  // A deep magenta for a pop of color
 
 .meal-details-container {
     max-width: 768px;
@@ -10,19 +13,24 @@ $background-card: #fff;
     background-color: $background-card;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    font-family: $font-family;
 
     .meal-header {
         text-align: center;
+        background-color: $header-bg;
+        padding: 15px;
+        border-radius: 8px;
+        color: $primary-color;
         margin-bottom: $spacing-base;
 
         .meal-title {
-            font-size: 28px;
-            color: $font-color;
+            font-size: 32px; // Larger font size for the main title
+            margin-bottom: 5px;
         }
 
         .meal-type {
-            font-size: 18px;
-            color: darken($font-color, 10%);
+            font-size: 20px; // Slightly larger for type
+            color: darken($primary-color, 10%);
             margin-bottom: $spacing-base;
         }
     }
@@ -33,43 +41,28 @@ $background-card: #fff;
         justify-content: space-between;
         margin-top: $spacing-base;
 
-        .ingredients {
-            flex: 1; 
+        .ingredients, .steps {
+            flex: 1;
             background-color: $background-light;
             padding: 15px;
             border-radius: 8px;
-            margin-right: 10px; 
+            margin: 0 10px;
 
             h4 {
+                font-size: 24px; // Larger font size for section headers
+                background-color: $header-bg; // Background color for section headers
+                padding: 10px;
+                border-radius: 8px;
+                color: $primary-color; // Use the primary color for headers
                 margin-top: 0;
                 margin-bottom: 10px;
             }
 
-            ul {
-                padding-left: 20px;
-                list-style: none; 
-
-                li {
-                    margin-bottom: 5px;
-                }
-            }
-        }
-
-        .steps {
-            flex: 2; 
-            background-color: $background-light;
-            padding: 15px;
-            border-radius: 8px;
-
-            h4 {
-                margin-top: 0;
-                margin-bottom: 10px;
-            }
-
-            ol {
+            ul, ol {
                 padding-left: 20px;
 
                 li {
+                    font-size: 18px; // Larger text for readability
                     margin-bottom: 5px;
                 }
             }
