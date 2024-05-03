@@ -1,0 +1,110 @@
+.pantry-container {
+    padding: 20px;
+    max-width: 1000px;
+    margin: auto;  
+    font-family: 'Ubuntu Mono', monospace; 
+
+    h2 {
+        text-align: center; 
+        color: #2d1768;  
+        font-size: 50px; 
+        padding: 10px 0;  
+        margin-bottom: 20px;  
+        margin-top: 0px;
+        font-weight: 600;
+      
+    
+    }
+  
+    .pantry-items {
+      display: flex;
+      flex-wrap: wrap;  
+      gap: 20px;  
+      justify-content: center;  
+  
+      .item-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 200px; 
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  
+        .item-name {
+          font-size: 16px;
+          color: #333;
+          margin-bottom: 5px;
+        }
+  
+        .item-quantity {
+          font-size: 12px;  
+          color: #666;
+          margin-bottom: 5px;  
+        }
+  
+        input[type="text"] {
+          width: 60%;  
+          padding: 6px;  
+          margin-bottom: 5px;  
+          border: 1px solid #ccc;
+          border-radius: 5px;
+  
+          &:focus {
+            outline: none;
+            border-color: #805ad5;  
+          }
+        }
+  
+        button {
+          width: 80%;  
+          padding: 8px;
+          background-color: #5a67d8;  
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+  
+          &:hover {
+            background-color: #434190;  
+          }
+        }
+      }
+    }
+  
+    .add-item-section {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      padding: 10px;
+      border-top: 2px solid #eee;
+  
+      input[type="text"] {
+        flex: 1;  
+        margin-right: 10px;  
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+  
+        &:focus {
+          outline: none;
+          border-color: #805ad5;
+        }
+      }
+  
+      button {
+        padding: 10px 20px;
+        background-color: #5a67d8;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+  
+        &:hover {
+          background-color: #434190;
+        }
+      }
+    }
+  }

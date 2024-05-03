@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchPantryItems, addPantryItem, updatePantryItem, removePantryItem } from '../services/pantryServices'; 
+import '../styles/Pantry.scss';
 
 const Pantry = () => {
   const [pantryItems, setPantryItems] = useState([]);
@@ -10,10 +11,12 @@ const Pantry = () => {
   }, []);
 
   const handleAdd = () => {
-    addPantryItem(newItem, () => {
-      fetchPantryItems(setPantryItems);
-      setNewItem({ name: '', quantity: '' });
-    });
+    if (newItem.name && newItem.quantity) {
+      addPantryItem(newItem, () => {
+        fetchPantryItems(setPantryItems);
+        setNewItem({ name: '', quantity: '' }); // Reset new item input fields
+      });
+    }
   };
 
   const handleUpdate = (item, newQuantity) => {
@@ -29,34 +32,36 @@ const Pantry = () => {
   };
 
   return (
-    <div>
+    <div className="pantry-container">
       <h2>My Pantry</h2>
-      <ul>
+      <div className="pantry-items">
         {pantryItems.map((item) => (
-          <li key={item.id}>
-            {item.name} - Quantity:
+          <div key={item.id} className="item-card">
+            <span className="item-name">{item.name}</span>
             <input
               type="text"
               defaultValue={item.quantity}
               onBlur={(e) => handleUpdate(item, e.target.value)}
             />
             <button onClick={() => handleRemove(item.id)}>Remove</button>
-          </li>
+          </div>
         ))}
-      </ul>
-      <input
-        type="text"
-        value={newItem.name}
-        onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
-        placeholder="Item Name"
-      />
-      <input
-        type="text"
-        value={newItem.quantity}
-        onChange={(e) => setNewItem({ ...newItem, quantity: e.target.value })}
-        placeholder="Quantity"
-      />
-      <button onClick={handleAdd}>Add New Item</button>
+      </div>
+      <div className="add-item-section">
+        <input
+          type="text"
+          value={newItem.name}
+          onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
+          placeholder="Item Name"
+        />
+        <input
+          type="text"
+          value={newItem.quantity}
+          onChange={(e) => setNewItem({ ...newItem, quantity: e.target.value })}
+          placeholder="Quantity"
+        />
+        <button onClick={handleAdd}>Add New Item</button>
+      </div>
     </div>
   );
 };
