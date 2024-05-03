@@ -4,6 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 refactoring from adding new meals in the day card to the mealslist and dropdown in day, firebase stuff
 fetching single recipie to many and choosing from there
+sooo many issues with suggestions and api calls and asynchronization stuff, pls refresh screen often if the recipie fetching doesnt work, tried using debouncing to fix but didnt work
 
 ## Available Scripts
 

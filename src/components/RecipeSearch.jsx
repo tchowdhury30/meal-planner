@@ -1,23 +1,33 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import useMealStore from '../services/useMealstore';
-import { saveMeal } from '../services/mealServices'; 
+import { saveMeal } from '../services/mealServices';
 import { fetchPantryItems } from '../services/pantryServices';
 
 
 const RecipeSearch = ({ closeSearch }) => {
   const { recipes, pantryItems, fetchRecipesBasedOnPantry, isLoading, fetchRecipeDetails } = useMealStore();
+  const [debouncedPantryItems, setDebouncedPantryItems] = useState(pantryItems);
 
   useEffect(() => {
-    if (pantryItems.length === 0) {
+    const handler = setTimeout(() => {
+      setDebouncedPantryItems(pantryItems);
+    }, 2000); 
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [pantryItems]);
+
+  useEffect(() => {
+    if (debouncedPantryItems.length === 0) {
       fetchPantryItems((pantryItems) => {
         fetchRecipesBasedOnPantry(pantryItems);
       });
     } else {
-      fetchRecipesBasedOnPantry(pantryItems);
-      
+      fetchRecipesBasedOnPantry(debouncedPantryItems);
     }
-  }, [pantryItems]);
+  }, [debouncedPantryItems, fetchRecipesBasedOnPantry, fetchPantryItems]);
 
   const handleRecipeClick = async (recipeId) => {
     const recipe = recipes.find(r => r.id === recipeId); 
@@ -43,8 +53,8 @@ const RecipeSearch = ({ closeSearch }) => {
               });
             });
           });   
-          console.log("myingredients", ingredients);
-          console.log("mysteps", steps);
+          //console.log("myingredients", ingredients);
+          //console.log("mysteps", steps);
 
           const newRecipe = {
             title: recipe.title,
