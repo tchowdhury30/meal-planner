@@ -9,7 +9,7 @@ const MealPlanner = ({gotMeals, setGotMeals}) => {
 
   return (
     <div>
-      <h1>Weekly Meal Planner</h1>
+      {/* <h1>Weekly Meal Planner</h1> */}
       <WeekCalendar gotMeals={gotMeals} setGotMeals={setGotMeals}/>
     </div>
   );

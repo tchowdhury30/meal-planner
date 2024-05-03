@@ -149,6 +149,16 @@
     }
 }
 
+.weekly-meals-header {
+    text-align: center; 
+    color: #2d1768;  
+    font-size: 50px; 
+    padding: 10px 0;  
+    margin-bottom: 20px;  
+    margin-top: 20px;
+    font-weight: 600;
+}
+
 .week-calendar {
     display: flex;
     justify-content: space-between;
@@ -161,6 +171,17 @@
         &:first-child, &:last-child {
             margin-left: 0;
             margin-right: 0;
+        }
+    }
+
+    
+    @media (max-width: 600px) {  
+        flex-direction: column;
+        align-items: center;  
+
+        .day-card {
+            width: 90%;  
+            max-width: none;  
         }
     }
 }
