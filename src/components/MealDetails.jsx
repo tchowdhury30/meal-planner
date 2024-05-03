@@ -27,7 +27,7 @@ const MealDetails = () => {
     if (error) {
         return <p>{error}</p>;
     }
-
+ 
     return (
         <div className="meal-details-container">
             {meal ? (
