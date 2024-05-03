@@ -4,7 +4,9 @@ import { removeMeal, fetchMealsFromAny } from '../services/mealServices';
 import AddMealForm from './AddMeal';
 import RecipeSearch from './RecipeSearch'; 
 import addMealIcon from '../img/add-meal.png'; 
-import deleteMealIcon from '../img/delete-meal.png'; 
+import deleteMealIcon from '../img/delete-meal.png';
+import showSuggestions from '../img/suggestion.png'
+import { useNavigate } from 'react-router-dom'; 
 import '../styles/MealsList.scss';
 
 // eslint-disable-next-line react/prop-types
@@ -21,6 +23,7 @@ const MealsList = ({ gotMeals, setGotMeals }) => {
 
   const [showAddMealForm, setShowAddMealForm] = useState(false);
   const [showRecipeSearch, setShowRecipeSearch] = useState(false); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchMealsFromAny(setMealList);
@@ -35,15 +38,24 @@ const MealsList = ({ gotMeals, setGotMeals }) => {
     });
   };
 
+  const viewMealDetails = (mealName) => {
+    navigate(`/meal-details/${encodeURIComponent(mealName)}`);
+};
+
   return (
-    <div className="meals-list">
-      <h2>Meals List</h2>
+    <div className="meals-list-container">
+      <div className="header-container">
+        <h2>Meals List</h2>
+      </div>
+      <div className="button-container">
       <button onClick={toggleAddMealForm} className="add-meal-button">
         {showAddMealForm ? 'Cancel Add Meal' : <img src={addMealIcon} alt="Add Meal" />}
       </button>
-      <button onClick={toggleRecipeSearch}>{showRecipeSearch ? 'Hide Suggestions' : 'Show Suggestions'}</button>
+      <button onClick={toggleRecipeSearch} className="suggestions-button"> {showRecipeSearch ? 'Hide Suggestions' : <img src={showSuggestions} alt="Suggestions" />}</button>
       {showAddMealForm && <AddMealForm closeForm={() => setShowAddMealForm(false)} gotMeals={gotMeals} setGotMeals={setGotMeals} />}
       {showRecipeSearch && <RecipeSearch closeSearch={() => setShowRecipeSearch(false)} pantryItems={pantryItems} />}
+      </div>
+      <div className="meals-list">
       {mealList.map((meal) => (
         <div key={meal.id}>
           {editingMealId === meal.id ? (
@@ -65,7 +77,7 @@ const MealsList = ({ gotMeals, setGotMeals }) => {
               <button onClick={clearMealEdit}>Cancel</button>
             </div>
           ) : (
-            <div>
+            <div className="view-meal"  onClick={() => viewMealDetails(meal.mealName)}>
               <span>{meal.mealName}</span>
               <span>{meal.description}</span>
               <button className="remove-meal-button" type="button" onClick={() => handleRemoveMeal('Any', meal.id)} ><img src={deleteMealIcon} alt="Delete Meal" /></button> 
@@ -73,6 +85,7 @@ const MealsList = ({ gotMeals, setGotMeals }) => {
           )}
         </div>
       ))}
+    </div>
     </div>
   );
 };

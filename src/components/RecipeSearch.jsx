@@ -4,7 +4,6 @@ import useMealStore from '../services/useMealstore';
 import { saveMeal } from '../services/mealServices';
 import { fetchPantryItems } from '../services/pantryServices';
 
-
 const RecipeSearch = ({ closeSearch }) => {
   const { recipes, pantryItems, fetchRecipesBasedOnPantry, isLoading, fetchRecipeDetails } = useMealStore();
   const [debouncedPantryItems, setDebouncedPantryItems] = useState(pantryItems);
@@ -18,7 +17,6 @@ const RecipeSearch = ({ closeSearch }) => {
       clearTimeout(handler);
     };
   }, [pantryItems]);
-
   useEffect(() => {
     if (debouncedPantryItems.length === 0) {
       fetchPantryItems((pantryItems) => {
