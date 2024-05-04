@@ -62,7 +62,7 @@ $edit-background: #cbcbeb;
         flex-direction: column;
 
         .edit-field {
-            width: 100%; /* Full width of the container */
+            width: 100%;  
             margin-bottom: 10px;
         }
 
@@ -81,9 +81,10 @@ $edit-background: #cbcbeb;
         }
 
         textarea {
-            height: 150px; /* Larger height for better visibility */
+            height: 150px;  
         }
     }
+
 
     button {
         width: 50%;

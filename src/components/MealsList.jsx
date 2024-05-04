@@ -80,7 +80,7 @@ const MealsList = ({ gotMeals, setGotMeals }) => {
           ) : (
             <div className="view-meal"  onClick={() => viewMealDetails(meal.mealName)}>
               <span>{meal.mealName}</span>
-              <span>{meal.description}</span>
+              {meal.imageUrl && <img src={meal.imageUrl} alt={meal.mealName} className="meal-image" />}
               <button className="remove-meal-button" type="button" onClick={() => handleRemoveMeal('Any', meal.id)} ><img src={deleteMealIcon} alt="Delete Meal" /></button> 
             </div>
           )}

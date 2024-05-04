@@ -53,6 +53,13 @@ $font-family: 'Ubuntu Mono', monospace;
                 background: none; 
             }
         }
+
+        .meal-image-big {
+            width: 100%; 
+            height: auto; 
+            object-fit: cover;  
+            border-radius: 4px;  
+        }
     }    
 
     .recipe-content {

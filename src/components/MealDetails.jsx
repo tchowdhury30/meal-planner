@@ -46,7 +46,7 @@ const MealDetails = () => {
                             <img src={editIcon} alt="Edit Meal" />
                         </button>
                         {meal.imageUrl && (
-                        <img src={meal.imageUrl} alt={meal.mealName} className="meal-image" />
+                        <img src={meal.imageUrl} alt={meal.mealName} className="meal-image-big" />
                     )}
                     </div>
                     <div className="recipe-content">
