@@ -34,6 +34,7 @@ const MealsList = ({ gotMeals, setGotMeals }) => {
   const toggleRecipeSearch = () => setShowRecipeSearch(!showRecipeSearch);
 
   const handleRemoveMeal = (dayId, mealId) => {
+    event.stopPropagation();
     removeMeal(dayId, mealId, () => {
       fetchMealsFromAny(setMealList); 
     });
