@@ -1,75 +1,59 @@
-# Getting Started with Create React App
+# Meal Planner App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
+This Meal Planner App is a web-based tool designed to help users organize their weekly meals efficiently. Built with React and styled using SCSS and React Bootstrap, the application integrates with Firebase for backend data storage and uses the Spoonacular API to fetch recipes. Users can manage their pantry, plan meals for the week, and explore recipes based on available ingredients. The app features a responsive, user-friendly interface enhanced by Zustand for state management and React Router for navigation.
 
-refactoring from adding new meals in the day card to the mealslist and dropdown in day, firebase stuff
-fetching single recipie to many and choosing from there
-sooo many issues with suggestions and api calls and asynchronization stuff, pls refresh screen often if the recipie fetching doesnt work, tried using debouncing to fix but didnt work
-also deleting a meal from recipies tab deletes the recipie if its in the weekly planner
-api limit makes it hard to test so the styling of when the recipies load is weak, but you can click on them to add it if the api is avaliable, then you have to reload the whole page after clicking
-## Available Scripts
+## Key Features
+- **Meal Planner**: Add, view, edit, and delete meals for each day of the week. Each meal entry includes a title, preparation steps, ingredients, an image, and meal type.
+- **Pantry Management**: Track ingredients in your pantry and utilize these to generate recipes through the Spoonacular API.
+- **Recipes**: Manage a personal recipe book and generate new recipes based on pantry items. Note that API limitations can affect this feature's responsiveness and availability.
 
-In the project directory, you can run:
+## Technologies Used
+- Frontend: React, SCSS, React Bootstrap, Zustand
+- Routing: React Router
+- Backend: Firebase
+- API: Spoonacular API
 
-### `npm start`
+## Installation and Setup
+   ```bash
+   git clone git@github.com:tchowdhury30/meal-planner.git
+   cd meal-planner
+   npm install
+   npm start
+   ```
+   This runs the app in development mode. Open http://localhost:3000 to view it in your browser. The page will reload if you make edits.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Known Bugs and Issues
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Recipe Fetching and Asynchronicity**: There are intermittent issues with recipe fetching from the Spoonacular API, likely due to asynchronous operations not completing as expected. Users might need to refresh the screen often if the recipe fetching does not seem to work. Despite attempts to stabilize this with debouncing, the problem persists occasionally.
+- **Deleting Meals**: Currently, deleting a meal from the recipes tab also removes it from the weekly planner if it's linked. This is due to the interconnected data handling which needs further refinement to isolate actions between different components.
+- **API Rate Limiting**: The API's rate limits pose challenges in extensive testing and affect the styling of dynamically loaded recipes. Users may need to reload the entire page after adding a recipe to ensure all components update correctly.
 
-### `npm test`
+## Challenges and Learning Points
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Asynchronous Data Handling
+- **State Management**: Managing state with asynchronous API calls was a steep learning curve. At first data fetching inconsistencies led to unpredictable UI states. To combat this, I tried to implement debouncing and state management with Zustand to handle state more effectively across components, but I'm not sure if it worked.
+- **UI Responsiveness**: Ensuring that the UI updates reflect the latest data was challenging. I tried to force component refreshes strategically to ensure that users always see the most recent data. But when adding a new recipie
 
-### `npm run build`
+### Dynamic Data Fetching
+- **API Integration and Error Handling**: Integrating the Spoonacular API was a critical learning point. I had to handle API limitations and errors gracefully, showing placeholder messages when data couldn't be fetched. This required learning more about error boundaries in React and enhancing user experience during wait times.
+- **Optimizing Requests**: Initially, fetching recipes was done one at a time, which was inefficient. I refactored the code to fetch multiple recipes in a single call and process this bulk data for display, which improved the responsiveness and efficiency of the application.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Full Stack Integration
+- **Firebase Integration**: Using Firebase as a backend was new to me. I faced challenges in setting up data storage correctly. Through trial and error, I learned about data structuring in Firebase, which are important for maintaining a scalable application.
+- **Connecting Frontend with Backend**: Bridging the frontend with Firebase involved numerous challenges, particularly around syncing state between the client and server. 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Refactoring and Code Optimization
+- **Code Maintainability**: As my first major full stack project, initial attempts led to bulky components and repeated code. I learned the importance of breaking down components into smaller, reusable parts, which improved the maintainability and readability of the code.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### API Rate Limiting
+- **Handling External Limitations**: Dealing with API rate limiting was particularly challenging. It forced me to think about optimizing the number of calls made and implementing caching strategies to reduce the load on the API, thus ensuring smoother user experiences even under limitations.
+- **Steep Learning Curve**: This project was a significant leap from my previous academic projects, involving a wide range of technologies and integration points. The experience was immensely rewarding, providing me with hands-on experience in full stack development and a deeper understanding of what it takes to build a scalable web application from scratch.
 
-### `npm run eject`
+## Future Enhancements
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. **Grocery List Integration**: A planned feature is to implement a grocery list that checks existing pantry items and compares them against the weekly meal plan. This would automatically generate a shopping list for missing ingredients, enhancing user convenience.
+2. **Dietary Filtering Options**: Enhance user customization by allowing filters for dietary preferences such as vegan, gluten-free, or allergy-specific requirements. This will help tailor the meal planning experience to individual health and lifestyle needs.
+3. **Automated Meal Planning**: Introduce functionality to generate entire meal plans based on user-selected filters (e.g., dietary restrictions, preferred cuisines). This feature aims to automate the meal planning process, making it more user-friendly and personalized.
+4. **UI/UX Improvements**: Focus on improving the user interface and experience, particularly in the responsiveness and aesthetic presentation of the recipe suggestions and meal planning components.
+5. **Code Optimization and Refactoring**: Further refine the codebase to improve performance and maintainability. This includes optimizing asynchronous operations, enhancing state management, and reducing redundancy.

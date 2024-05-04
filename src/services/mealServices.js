@@ -145,7 +145,7 @@ export const removeMealByName = (day, mealName, callback) => {
 };
 
 export const fetchMealByName = (mealName, callback) => {
-  const mealsRef = ref(db, 'meals/Any'); // Adjust the path as necessary for your database structure
+  const mealsRef = ref(db, 'meals/Any'); 
   onValue(mealsRef, (snapshot) => {
       const mealsData = snapshot.val();
       let found = false;
