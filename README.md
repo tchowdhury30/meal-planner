@@ -8,6 +8,13 @@ This Meal Planner App is a web-based tool designed to help users organize their 
 - **Pantry Management**: Track ingredients in your pantry and utilize these to generate recipes through the Spoonacular API.
 - **Recipes**: Manage a personal recipe book and generate new recipes based on pantry items. Note that API limitations can affect this feature's responsiveness and availability.
 
+## Demos
+[Deployed URL](https://meal-planner-hddy.onrender.com)
+Takes time to render!
+
+[Demo Video](https://drive.google.com/file/d/1fbou9jAIB3d2S5-_l-397Mih3V5pLtl5/view?usp=sharing)
+
+
 ## Technologies Used
 - Frontend: React, SCSS, React Bootstrap, Zustand
 - Routing: React Router
