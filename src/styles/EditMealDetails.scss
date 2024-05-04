@@ -11,69 +11,90 @@ $edit-background: #cbcbeb;
 .edit-meal-details-container {
     max-width: 768px;
     margin: 40px auto;
-    padding: $spacing-base;
-    background-color: $edit-background;
+    padding: 20px;
+    background-color: #cbcbeb;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    font-family: $font-family;
+    font-family: 'Ubuntu Mono', monospace;
 
     .edit-header {
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center; 
-        background-color: $title-bg;
+        text-align: center;
+        background-color: #cbcbeb;
         padding: 15px;
-        border-radius: 8px;
+        border-radius: 8px 8px 0 0;
         color: #190b2c;
-        margin-bottom: $spacing-base;
+    }
 
-        h1 {
-            font-size: 32px;
-            margin: 0; 
-        }
+    .edit-button {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        display: block;
+        margin-left: 500px;
+        background: transparent;
+        padding: 0px;
 
-        .edit-button {
-            background: none;
-            border: none;
-            cursor: pointer;
 
-            img {
-                height: 40px;
-                width: auto;
-            }
-
-            &:hover {
-                background: none;
-            }
+        &:hover {
+            background: transparent;
         }
     }
 
-    select, input[type="text"], textarea {
-        width: 100%; 
-        padding: 10px;
-        margin-bottom: 10px;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-        background-color: #fff;
+    img {
+        height: 40px; 
+        width: auto;
+    }
 
-        &:focus {
-            outline: none;
-            border-color: #5a67d8;
+    h1 {
+        font-size: 40px;
+        margin: 0;
+    }
+
+    h2 {
+        font-size: 30px;
+        margin: 8;
+        padding-top: 0px;
+    }
+
+
+    .edit-ingredients, .edit-steps, .edit-type {
+        display: flex;
+        flex-direction: column;
+
+        .edit-field {
+            width: 100%; /* Full width of the container */
+            margin-bottom: 10px;
+        }
+
+        select, input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            font-family: 'Ubuntu Mono', monospace;
+
+            &:focus {
+                outline: none;
+                border-color: #5a67d8;
+            }
+        }
+
+        textarea {
+            height: 150px; /* Larger height for better visibility */
         }
     }
 
     button {
         width: 50%;
         padding: 10px 0;
+        display: block;
         margin: 20px auto;
-        background-color: #5a67d8;
-        color: white;
+        background: transparent;
         border-radius: 8px;
         border: none;
         cursor: pointer;
-
-        &:hover {
-            background-color: #434190;
-        }
     }
+
+    
 }

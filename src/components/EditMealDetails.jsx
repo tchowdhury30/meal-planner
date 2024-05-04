@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchMealByName, updateMeal } from '../services/mealServices';
 import viewIcon from '../img/view.png';
+import saveIcon from '../img/add-meal.png';
+
 import '../styles/EditMealDetails.scss';
 
 const EditMealDetails = () => {
@@ -44,12 +46,13 @@ const EditMealDetails = () => {
         <div className="edit-meal-details-container">
             <form onSubmit={handleSave}>
                 <div className="edit-header">
-                <h1>{meal.mealName || 'No Meal Name'}</h1>
                 <button onClick={handleView} className="edit-button">
                     <img src={viewIcon} alt="View Meal" />
                 </button>
+                <h1>{meal.mealName || 'No Meal Name'}</h1>
                 </div>
                 <div className="edit-type">
+                <h2>Meal Type</h2>
                 <select 
                     value={meal.mealType || ''} 
                     onChange={(e) => setMeal({ ...meal, mealType: e.target.value })}
@@ -62,6 +65,7 @@ const EditMealDetails = () => {
                 </select>
                 </div>
                 <div className ="edit-ingredients">
+                <h2>Ingredients</h2>
                 <input 
                     type="text"
                     value={ingredientInput}
@@ -70,6 +74,7 @@ const EditMealDetails = () => {
                 />
                 </div>
                 <div className ="edit-steps">
+                    <h2>Steps</h2>
                 <textarea
                     value={meal.recipe ? meal.recipe.steps.join('\n') : ''}
                     onChange={(e) => setMeal({
@@ -78,7 +83,7 @@ const EditMealDetails = () => {
                     })}
                 />
                 </div>
-                <button type="submit">Save</button>
+                <button className="submit" type="submit"><img src={saveIcon} alt="Save Meal Edits" /></button>
             </form>
         </div>
     );
