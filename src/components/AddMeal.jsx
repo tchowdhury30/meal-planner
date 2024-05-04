@@ -13,13 +13,14 @@ const AddMeal = ({ day, closeForm, gotMeals, setGotMeals }) => {
     mealType,
     setMealType,
     recipeDetails,
-    resetMealCreation
+    resetMealCreation,
+    imageUrl,
+    setImageUrl
   } = useMealStore();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Use day prop directly since it will default to "Any" if not provided
-    saveMeal({ mealName, recipe: recipeDetails, mealType, day }, () => {
+    saveMeal({ mealName, recipe: recipeDetails, mealType, imageUrl, day }, () => {
       console.log(`Meal added: ${mealName}, Type: ${mealType}, Recipe: ${JSON.stringify(recipeDetails)}, on ${day}`);
       resetMealCreation();
       closeForm();
@@ -38,6 +39,7 @@ const AddMeal = ({ day, closeForm, gotMeals, setGotMeals }) => {
           <option value="dinner">Dinner</option>
           <option value="snack">Snack</option>
         </select>
+        <input type="text" value={imageUrl} onChange={e => setImageUrl(e.target.value)} placeholder="Image URL" />
         <Recipe />
         <button type="submit" className='add-meal-icon'> <img src={addMealIcon} alt="Add Meal" /> </button>
       </form>
