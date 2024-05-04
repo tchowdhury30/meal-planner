@@ -6,6 +6,7 @@ refactoring from adding new meals in the day card to the mealslist and dropdown 
 fetching single recipie to many and choosing from there
 sooo many issues with suggestions and api calls and asynchronization stuff, pls refresh screen often if the recipie fetching doesnt work, tried using debouncing to fix but didnt work
 also deleting a meal from recipies tab deletes the recipie if its in the weekly planner
+api limit makes it hard to test so the styling of when the recipies load is weak, but you can click on them to add it if the api is avaliable, then you have to reload the whole page after clicking
 ## Available Scripts
 
 In the project directory, you can run:

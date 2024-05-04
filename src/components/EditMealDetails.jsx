@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchMealByName, updateMeal } from '../services/mealServices';
 import viewIcon from '../img/view.png';
-import '../styles/MealDetails.scss';
+import '../styles/EditMealDetails.scss';
 
 const EditMealDetails = () => {
     const { mealName } = useParams();
