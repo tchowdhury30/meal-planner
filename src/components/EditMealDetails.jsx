@@ -12,6 +12,7 @@ const EditMealDetails = () => {
     const navigate = useNavigate();
     const [meal, setMeal] = useState({});
     const [ingredientInput, setIngredientInput] = useState('');
+    const [imageUrl, setImageUrl] = useState('');
 
     const handleView = () => {
         navigate(`/meal-details/${mealName}`);
@@ -24,6 +25,7 @@ const EditMealDetails = () => {
                 const ingredientString = mealData.recipe.ingredients.map(ing => ing.name).join('; ');
                 setIngredientInput(ingredientString);
             }
+            setImageUrl(mealData.imageUrl || ''); 
         });
     }, [mealName]);
 
@@ -35,8 +37,13 @@ const EditMealDetails = () => {
             recipe: {
                 ...meal.recipe,
                 ingredients: ingredientsArray
-            }
+            },
+            imageUrl: imageUrl 
         };
+
+        if (imageUrl) {
+            updatedMeal.imageUrl = imageUrl;
+        }
         updateMeal('Any', meal.id, updatedMeal, () => {
             navigate(`/meal-details/${mealName}`);
         });
@@ -63,6 +70,15 @@ const EditMealDetails = () => {
                     <option value="dinner">Dinner</option>
                     <option value="snack">Snack</option>
                 </select>
+                </div>
+                <div className="edit-imgURL">
+                <h2>Image URL</h2>
+                <input
+                    type="text"
+                    value={imageUrl}
+                    onChange={(e) => setImageUrl(e.target.value)}
+                    placeholder="Enter image URL"
+                />
                 </div>
                 <div className ="edit-ingredients">
                 <h2>Ingredients</h2>

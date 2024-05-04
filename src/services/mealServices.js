@@ -1,7 +1,7 @@
 import { ref, push, onValue, set, remove } from "firebase/database";
 import { db } from './firebaseConfig';
 
-export function saveMeal({ mealName, recipe, mealType, day }, callback) {
+export function saveMeal({ mealName, recipe, mealType, day, imageUrl = '' }, callback) {
   let mealsRef;
   if (!day) {
     mealsRef = ref(db, 'meals/' + "Any");
@@ -11,7 +11,8 @@ export function saveMeal({ mealName, recipe, mealType, day }, callback) {
     push(mealsRef, {
       mealName,
       recipe,
-      mealType
+      mealType,
+      imageUrl
     }).then(() => {
       callback();   
     }).catch(error => {

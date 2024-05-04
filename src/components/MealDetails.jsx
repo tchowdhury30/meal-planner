@@ -45,6 +45,9 @@ const MealDetails = () => {
                         <button onClick={handleEdit} className="edit-button">
                             <img src={editIcon} alt="Edit Meal" />
                         </button>
+                        {meal.imageUrl && (
+                        <img src={meal.imageUrl} alt={meal.mealName} className="meal-image" />
+                    )}
                     </div>
                     <div className="recipe-content">
                         {meal.recipe && meal.recipe.ingredients && (
