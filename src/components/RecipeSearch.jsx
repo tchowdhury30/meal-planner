@@ -67,6 +67,7 @@ const RecipeSearch = ({ closeSearch }) => {
             recipe: newRecipe,
             mealType: newRecipe.type, 
             day: 'Any', 
+            imageUrl: recipe.image
           }, () => {
             console.log('Meal saved successfully');
             setUpdateTrigger(!updateTrigger); 
