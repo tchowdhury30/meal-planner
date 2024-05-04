@@ -7,6 +7,7 @@ import { fetchPantryItems } from '../services/pantryServices';
 const RecipeSearch = ({ closeSearch }) => {
   const { recipes, pantryItems, fetchRecipesBasedOnPantry, isLoading, fetchRecipeDetails } = useMealStore();
   const [debouncedPantryItems, setDebouncedPantryItems] = useState(pantryItems);
+  const [updateTrigger, setUpdateTrigger] = useState(false);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -68,6 +69,7 @@ const RecipeSearch = ({ closeSearch }) => {
             day: 'Any', 
           }, () => {
             console.log('Meal saved successfully');
+            setUpdateTrigger(!updateTrigger); 
           });
         } 
 
