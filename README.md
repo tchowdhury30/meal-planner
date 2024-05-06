@@ -9,7 +9,7 @@ This Meal Planner App is a web-based tool designed to help users organize their 
 - **Recipes**: Manage a personal recipe book and generate new recipes based on pantry items. Note that API limitations can affect this feature's responsiveness and availability.
 
 ## Demos
-[Deployed URL](https://meal-planner-hddy.onrender.com)
+[Deployed URL](https://mealmap.onrender.com)
 Takes time to render!
 
 [Demo Video](https://drive.google.com/file/d/1fbou9jAIB3d2S5-_l-397Mih3V5pLtl5/view?usp=sharing)
