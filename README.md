@@ -14,12 +14,12 @@ Takes time to render!
 
 [Demo Video](https://drive.google.com/file/d/1fbou9jAIB3d2S5-_l-397Mih3V5pLtl5/view?usp=sharing)
 
-
-## Technologies Used
-- Frontend: React, SCSS, React Bootstrap, Zustand
-- Routing: React Router
-- Backend: Firebase
-- API: Spoonacular API
+### Technologies Used
+- **Frontend**: Built using **React**, **SCSS**, **React Bootstrap**, and **Zustand** for state management. These tools allowed me to create a dynamic and responsive user interface that is easy to navigate.
+- **Routing**: **React Router** was used for creating a smooth, single-page application (SPA) experience, ensuring efficient navigation across different app sections.
+- **Backend**: Integrated with **Firebase** for secure, real-time data storage and handling authentication.
+- **API**: The **Spoonacular API** is used to fetch recipes and manage the recipe database.
+- **Version Control**: Used **Git** and **GitHub** for version control and collaboration, ensuring smooth team coordination and project management.
 
 ## Installation and Setup
    ```bash
